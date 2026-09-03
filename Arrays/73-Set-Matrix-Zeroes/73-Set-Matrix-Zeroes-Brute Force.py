@@ -1,8 +1,17 @@
+"""
+Problem: 73. Set Matrix Zeroes
+Approach: Brute Force
+Time Complexity: O(m * n * (m + n))
+Space Complexity: O(1)
+"""
+
+
 class Solution:
     def setZeroes(self, matrix):
         m = len(matrix)
         n = len(matrix[0])
 
+        # Mark cells that need to become zero with -1
         for i in range(m):
             for j in range(n):
                 if matrix[i][j] == 0:
@@ -17,7 +26,7 @@ class Solution:
                         if matrix[row][j] != 0:
                             matrix[row][j] = -1
 
-        # Convert markers to 0
+        # Convert markers to zero
         for i in range(m):
             for j in range(n):
                 if matrix[i][j] == -1:

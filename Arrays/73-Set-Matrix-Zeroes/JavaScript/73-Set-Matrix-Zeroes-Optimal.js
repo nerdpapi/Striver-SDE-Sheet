@@ -22,20 +22,23 @@ var setZeroes = function(matrix) {
 
     // Mark rows and columns
     for (let i = 0; i < m; i++) {
-
-        if (matrix[i][0] === 0) {
-            col0 = 0;
-        }
-
-        for (let j = 1; j < n; j++) {
+        for (let j = 0; j < n; j++) {
             if (matrix[i][j] === 0) {
+
+                // Mark row
                 matrix[i][0] = 0;
-                matrix[0][j] = 0;
+
+                // Mark column only if j is not 0
+                if (j !== 0) {
+                    matrix[0][j] = 0;
+                } else {
+                    col0 = 0;
+                }
             }
         }
     }
 
-    // Process inner matrix
+    // Set inner matrix
     for (let i = 1; i < m; i++) {
         for (let j = 1; j < n; j++) {
             if (matrix[i][0] === 0 || matrix[0][j] === 0) {

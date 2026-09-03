@@ -1,7 +1,23 @@
+/**
+ * Problem: 73. Set Matrix Zeroes
+ * Approach: Brute Force
+ *
+ * Mark cells that need to become zero with -1.
+ *
+ * Time Complexity: O(m * n * (m + n))
+ * Space Complexity: O(1)
+ */
+
+/**
+ * @param {number[][]} matrix
+ * @return {void}
+ */
+
 var setZeroes = function(matrix) {
     const m = matrix.length;
     const n = matrix[0].length;
 
+    // Mark cells
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
             if (matrix[i][j] === 0) {
@@ -23,7 +39,7 @@ var setZeroes = function(matrix) {
         }
     }
 
-    // Convert markers to 0
+    // Convert markers to zero
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
             if (matrix[i][j] === -1) {

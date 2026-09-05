@@ -1,4 +1,13 @@
 """
+1. Brute Force
+
+### Idea
+
+Generate all permutations, sort them lexicographically, find the current permutation,
+ and return the next permutation.
+
+This is mainly useful for understanding the problem. It is far too expensive for large `n`.
+
 Problem: 31. Next Permutation
 Approach: Optimal - Breakpoint + Swap + Reverse
 

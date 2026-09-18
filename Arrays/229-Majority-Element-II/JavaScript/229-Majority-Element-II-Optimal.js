@@ -1,49 +1,73 @@
 /**
- * Problem: 169. Majority Element
- * Approach: Optimal - Moore's Voting Algorithm
+ * Problem: 229. Majority Element II
+ * Approach: Optimal - Extended Moore's Voting Algorithm
+ *
+ * There can be at most two elements occurring more than n / 3 times.
  *
  * Phase 1:
- * Find a potential majority candidate using voting.
+ * Find two potential candidates.
  *
  * Phase 2:
- * Verify that the candidate actually appears more than n / 2 times.
+ * Verify their actual frequencies.
  *
  * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Space Complexity: O(1) excluding output
  */
 
 /**
  * @param {number[]} nums
- * @return {number}
+ * @return {number[]}
  */
 var majorityElement = function(nums) {
-    let count = 0;
-    let el = nums[0];
+    const n = nums.length;
 
-    // Phase 1: Find candidate
+    let count1 = 0;
+    let count2 = 0;
+
+    let el1 = null;
+    let el2 = null;
+
+    // Phase 1: Find candidates
     for (const num of nums) {
-        if (count === 0) {
-            el = num;
-            count = 1;
-        } else if (num === el) {
-            count++;
+        if (count1 === 0 && num !== el2) {
+            el1 = num;
+            count1 = 1;
+        } else if (count2 === 0 && num !== el1) {
+            el2 = num;
+            count2 = 1;
+        } else if (num === el1) {
+            count1++;
+        } else if (num === el2) {
+            count2++;
         } else {
-            count--;
+            count1--;
+            count2--;
         }
     }
 
-    // Phase 2: Verify candidate
-    let count2 = 0;
+    // Phase 2: Verify candidates
+    count1 = 0;
+    count2 = 0;
 
     for (const num of nums) {
-        if (num === el) {
+        if (num === el1) {
+            count1++;
+        }
+
+        if (num === el2) {
             count2++;
         }
     }
 
-    if (count2 > nums.length / 2) {
-        return el;
+    const result = [];
+
+    if (count1 > n / 3) {
+        result.push(el1);
     }
 
-    return -1;
+    if (count2 > n / 3) {
+        result.push(el2);
+    }
+
+    return result;
 };

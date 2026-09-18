@@ -1,10 +1,8 @@
 /**
- * Problem: 169. Majority Element
+ * Problem: 229. Majority Element II
  * Approach: Better - Hash Map
  *
  * Store the frequency of each element.
- * As soon as an element's frequency becomes greater than n / 2,
- * return it.
  *
  * Time Complexity: O(n)
  * Space Complexity: O(n)
@@ -12,19 +10,24 @@
 
 /**
  * @param {number[]} nums
- * @return {number}
+ * @return {number[]}
  */
 var majorityElement = function(nums) {
-    const freq = new Map();
     const n = nums.length;
+    const freq = new Map();
+    const result = [];
 
     for (const num of nums) {
         freq.set(num, (freq.get(num) || 0) + 1);
 
-        if (freq.get(num) > n / 2) {
-            return num;
+        if (freq.get(num) > n / 3 && !result.includes(num)) {
+            result.push(num);
+        }
+
+        if (result.length === 2) {
+            break;
         }
     }
 
-    return -1;
+    return result;
 };

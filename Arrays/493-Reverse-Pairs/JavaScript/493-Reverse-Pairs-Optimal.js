@@ -1,41 +1,88 @@
 /**
- * Problem: 75. Sort Colors
- * Approach: Optimal - Dutch National Flag Algorithm
+ * Problem: 493. Reverse Pairs
+ * Approach: Optimal - Merge Sort + Two Pointers
  *
- * Use three pointers:
- * low  -> boundary for 0
- * mid  -> current element
- * high -> boundary for 2
+ * Count pairs where:
+ *     nums[i] > 2 * nums[j]
+ *     i < j
  *
- * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Time Complexity: O(n log n)
+ * Space Complexity: O(n)
  */
 
 /**
  * @param {number[]} nums
- * @return {void}
+ * @return {number}
  */
+var reversePairs = function(nums) {
 
-var sortColors = function(nums) {
-    let low = 0;
-    let mid = 0;
-    let high = nums.length - 1;
+    function countPairs(low, mid, high) {
+        let count = 0;
+        let right = mid + 1;
 
-    while (mid <= high) {
+        for (let i = low; i <= mid; i++) {
+            while (
+                right <= high &&
+                nums[i] > 2 * nums[right]
+            ) {
+                right++;
+            }
 
-        if (nums[mid] === 0) {
-            [nums[mid], nums[low]] = [nums[low], nums[mid]];
-            low++;
-            mid++;
+            count += right - (mid + 1);
         }
 
-        else if (nums[mid] === 1) {
-            mid++;
+        return count;
+    }
+
+    function merge(low, mid, high) {
+        const temp = [];
+
+        let left = low;
+        let right = mid + 1;
+
+        while (left <= mid && right <= high) {
+            if (nums[left] <= nums[right]) {
+                temp.push(nums[left]);
+                left++;
+            } else {
+                temp.push(nums[right]);
+                right++;
+            }
         }
 
-        else {
-            [nums[mid], nums[high]] = [nums[high], nums[mid]];
-            high--;
+        while (left <= mid) {
+            temp.push(nums[left]);
+            left++;
+        }
+
+        while (right <= high) {
+            temp.push(nums[right]);
+            right++;
+        }
+
+        for (let i = 0; i < temp.length; i++) {
+            nums[low + i] = temp[i];
         }
     }
+
+    function mergeSort(low, high) {
+        if (low >= high) {
+            return 0;
+        }
+
+        const mid = Math.floor((low + high) / 2);
+
+        let count = 0;
+
+        count += mergeSort(low, mid);
+        count += mergeSort(mid + 1, high);
+
+        count += countPairs(low, mid, high);
+
+        merge(low, mid, high);
+
+        return count;
+    }
+
+    return mergeSort(0, nums.length - 1);
 };

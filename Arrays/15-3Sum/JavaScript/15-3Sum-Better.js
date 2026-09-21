@@ -14,24 +14,33 @@
  * @return {number[][]}
  */
 var threeSum = function(nums) {
-    const set1 = new Set();
+    let result = [];
+    let set = new Set();
 
     for (let i = 0; i < nums.length; i++) {
-        const hashSet = new Set();
+
+        let seen = new Set();
 
         for (let j = i + 1; j < nums.length; j++) {
-            const third = -(nums[i] + nums[j]);
 
-            if (hashSet.has(third)) {
-                const temp = [nums[i], nums[j], third];
-                temp.sort((a, b) => a - b);
+            let third = -(nums[i] + nums[j]);
 
-                set1.add(temp.join(","));
+            if (seen.has(third)) {
+
+                let triplet = [nums[i], nums[j], third]
+                    .sort((a, b) => a - b);
+
+                let key = triplet.join(",");
+
+                if (!set.has(key)) {
+                    set.add(key);
+                    result.push(triplet);
+                }
             }
 
-            hashSet.add(nums[j]);
+            seen.add(nums[j]);
         }
     }
 
-    return [...set1].map(str => str.split(",").map(Number));
+    return result;
 };

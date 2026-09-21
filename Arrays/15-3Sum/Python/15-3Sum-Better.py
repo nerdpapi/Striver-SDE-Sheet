@@ -21,11 +21,11 @@ class Solution:
 
             for j in range(i + 1, len(nums)):
 
-                diff = -(nums[i] + nums[j])
+                third = -(nums[i] + nums[j])
 
-                if diff in seen:
+                if third in seen:
 
-                    triplet = [nums[i], nums[j], diff]
+                    triplet = [nums[i], nums[j], third]
                     triplet.sort()
 
                     key = tuple(triplet)

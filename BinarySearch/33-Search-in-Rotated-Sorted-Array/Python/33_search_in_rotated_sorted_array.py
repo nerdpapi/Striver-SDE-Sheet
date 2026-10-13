@@ -1,7 +1,7 @@
-
 """
 Problem: 33. Search in Rotated Sorted Array
 Approach: Modified Binary Search
+
 Time Complexity: O(log n)
 Space Complexity: O(1)
 """
@@ -32,12 +32,3 @@ class Solution:
                     right = mid - 1
 
         return -1
-
-
-# Test the solution
-if __name__ == "__main__":
-    solution = Solution()
-
-    print(solution.search([4, 5, 6, 7, 0, 1, 2], 0))  # Output: 4
-    print(solution.search([4, 5, 6, 7, 0, 1, 2], 3))  # Output: -1
-    print(solution.search([1], 0))                    # Output: -1

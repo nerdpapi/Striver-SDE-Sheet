@@ -19,7 +19,10 @@ var getFloorAndCeil = function(nums, x) {
 
     while (low <= high) {
         const mid = Math.floor((low + high) / 2);
-        if (nums[mid] <= x) {
+        if(nums[mid]=== x){
+            return [x, x]
+        }
+        else if (nums[mid] < x) {
             floorVal = nums[mid];
             low = mid + 1;
         } else {

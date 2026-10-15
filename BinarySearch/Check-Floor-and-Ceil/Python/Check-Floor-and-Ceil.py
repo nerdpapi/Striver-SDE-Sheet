@@ -15,10 +15,11 @@ class Solution:
 
         while low <= high:
             mid = (low + high) // 2
-            if nums[mid] <= x:
+            if nums[mid] == x:
+                return [x, x]
+            elif nums[mid] < x:
                 floor_val = nums[mid]
                 low = mid + 1
-
             else:
                 ceil_val = nums[mid]
                 high = mid - 1

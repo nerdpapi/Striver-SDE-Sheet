@@ -11,9 +11,6 @@ class Solution:
         if x < 2:
             return x
 
-        i = 1
-
-        while i <= x // i:
-            i += 1
-
-        return i - 1
+        for i in range(1, x + 1):
+            if i * i > x:
+                return i - 1

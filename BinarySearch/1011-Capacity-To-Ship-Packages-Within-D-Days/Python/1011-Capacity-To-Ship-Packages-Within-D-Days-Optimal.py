@@ -4,7 +4,6 @@ Approach: Binary Search on Answer
 Time Complexity: O(n * log(sum(weights) - max(weights) + 1))
 Space Complexity: O(1)
 """
-
 class Solution:
     def shipWithinDays(self, weights: list[int], days: int) -> int:
         n = len(weights)

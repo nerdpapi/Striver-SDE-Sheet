@@ -4,7 +4,6 @@ Approach: Brute Force — Check Every Capacity
 Time Complexity: O(n * (sum(weights) - max(weights) + 1))
 Space Complexity: O(1)
 """
-
 class Solution:
     def shipWithinDays(self, weights: list[int], days: int) -> int:
         n = len(weights)

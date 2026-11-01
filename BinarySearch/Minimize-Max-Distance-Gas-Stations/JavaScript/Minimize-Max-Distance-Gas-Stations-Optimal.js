@@ -1,43 +1,54 @@
 /**
- * Problem: Painter's Partition Problem
+ * Problem: Minimize Max Distance of Adjacent Gas Stations
  * Approach: Binary Search on Answer
- * Time Complexity: O(n * log(sum(arr) - max(arr) + 1))
+ * Time Complexity: O(n * log(maxGap / epsilon))
  * Space Complexity: O(1)
  */
 
 class Solution {
-    minTime(arr, k) {
-        function countPainters(arr, maxTime) {
-            let painters = 1;
-            let currTime = 0;
+    minMaxDist(stations, k) {
+        const n = stations.length;
 
-            for (const num of arr) {
-                if (currTime + num > maxTime) {
-                    painters++;
-                    currTime = num;
-                } else {
-                    currTime += num;
+        function requiredStations(dist) {
+            let total = 0;
+
+            for (let i = 0; i < n - 1; i++) {
+                let gap = stations[i + 1] - stations[i];
+
+                total += Math.ceil(gap / dist) - 1;
+
+                if (total > k) {
+                    return total;
                 }
             }
 
-            return painters;
+            return total;
         }
 
-        let low = Math.max(...arr);
-        let high = arr.reduce((sum, num) => sum + num, 0);
-        let ans = -1;
+        let low = 0;
+        let high = 0;
 
-        while (low <= high) {
-            let mid = Math.floor((low + high) / 2);
+        for (let i = 0; i < n - 1; i++) {
+            high = Math.max(
+                high,
+                stations[i + 1] - stations[i]
+            );
+        }
 
-            if (countPainters(arr, mid) <= k) {
-                ans = mid;
-                high = mid - 1;
+        const diff = 1e-6;
+
+        while (high - low > diff) {
+            let mid = (low + high) / 2;
+
+            let count = requiredStations(mid);
+
+            if (count > k) {
+                low = mid;
             } else {
-                low = mid + 1;
+                high = mid;
             }
         }
 
-        return ans;
+        return high;
     }
 }

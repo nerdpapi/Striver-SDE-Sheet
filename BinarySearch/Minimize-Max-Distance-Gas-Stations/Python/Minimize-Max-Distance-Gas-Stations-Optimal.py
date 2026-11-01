@@ -1,36 +1,45 @@
 """
-Problem: Painter's Partition Problem
+Problem: Minimize Max Distance of Adjacent Gas Stations
 Approach: Binary Search on Answer
-Time Complexity: O(n * log(sum(arr) - max(arr) + 1))
+Time Complexity: O(n * log(maxGap / epsilon))
 Space Complexity: O(1)
 """
 
+import math
+
 class Solution:
-    def minTime(self, arr, k):
-        def countPainters(arr, maxTime):
-            painters = 1
-            currTime = 0
+    def minMaxDist(self, stations, k):
+        n = len(stations)
 
-            for num in arr:
-                if currTime + num > maxTime:
-                    painters += 1
-                    currTime = num
-                else:
-                    currTime += num
+        def requiredStations(dist):
+            total = 0
 
-            return painters
+            for i in range(n - 1):
+                gap = stations[i + 1] - stations[i]
 
-        low = max(arr)
-        high = sum(arr)
-        ans = -1
+                total += math.ceil(gap / dist) - 1
 
-        while low <= high:
-            mid = (low + high) // 2
+                if total > k:
+                    return total
 
-            if countPainters(arr, mid) <= k:
-                ans = mid
-                high = mid - 1
+            return total
+
+        low = 0
+        high = 0
+
+        for i in range(n - 1):
+            high = max(high, stations[i + 1] - stations[i])
+
+        diff = 1e-6
+
+        while high - low > diff:
+            mid = (low + high) / 2
+
+            count = requiredStations(mid)
+
+            if count > k:
+                low = mid
             else:
-                low = mid + 1
+                high = mid
 
-        return ans
+        return high

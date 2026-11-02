@@ -1,54 +1,67 @@
 /**
- * Problem: Minimize Max Distance of Adjacent Gas Stations
- * Approach: Binary Search on Answer
- * Time Complexity: O(n * log(maxGap / epsilon))
+ * Problem: 4. Median of Two Sorted Arrays
+ * Approach: Binary Search on Partition
+ * Time Complexity: O(log(min(n1, n2)))
  * Space Complexity: O(1)
  */
 
 class Solution {
-    minMaxDist(stations, k) {
-        const n = stations.length;
+    findMedianSortedArrays(nums1, nums2) {
+        let n1 = nums1.length;
+        let n2 = nums2.length;
 
-        function requiredStations(dist) {
-            let total = 0;
-
-            for (let i = 0; i < n - 1; i++) {
-                let gap = stations[i + 1] - stations[i];
-
-                total += Math.ceil(gap / dist) - 1;
-
-                if (total > k) {
-                    return total;
-                }
-            }
-
-            return total;
+        if (n1 > n2) {
+            return this.findMedianSortedArrays(nums2, nums1);
         }
+
+        let left = Math.floor((n1 + n2 + 1) / 2);
+        let n = n1 + n2;
 
         let low = 0;
-        let high = 0;
+        let high = n1;
 
-        for (let i = 0; i < n - 1; i++) {
-            high = Math.max(
-                high,
-                stations[i + 1] - stations[i]
-            );
-        }
+        while (low <= high) {
+            let mid1 = Math.floor((low + high) / 2);
+            let mid2 = left - mid1;
 
-        const diff = 1e-6;
+            let l1 = -Infinity;
+            let l2 = -Infinity;
 
-        while (high - low > diff) {
-            let mid = (low + high) / 2;
+            let r1 = Infinity;
+            let r2 = Infinity;
 
-            let count = requiredStations(mid);
+            if (mid1 < n1) {
+                r1 = nums1[mid1];
+            }
 
-            if (count > k) {
-                low = mid;
+            if (mid2 < n2) {
+                r2 = nums2[mid2];
+            }
+
+            if (mid1 - 1 >= 0) {
+                l1 = nums1[mid1 - 1];
+            }
+
+            if (mid2 - 1 >= 0) {
+                l2 = nums2[mid2 - 1];
+            }
+
+            if (l1 <= r2 && l2 <= r1) {
+                if (n % 2 === 1) {
+                    return Math.max(l1, l2);
+                }
+
+                return (
+                    Math.max(l1, l2) +
+                    Math.min(r1, r2)
+                ) / 2;
+            } else if (l1 > r2) {
+                high = mid1 - 1;
             } else {
-                high = mid;
+                low = mid1 + 1;
             }
         }
 
-        return high;
+        return 0;
     }
 }

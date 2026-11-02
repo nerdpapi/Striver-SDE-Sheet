@@ -1,45 +1,58 @@
 """
-Problem: Minimize Max Distance of Adjacent Gas Stations
-Approach: Binary Search on Answer
-Time Complexity: O(n * log(maxGap / epsilon))
+Problem: 4. Median of Two Sorted Arrays
+Approach: Binary Search on Partition
+Time Complexity: O(log(min(n1, n2)))
 Space Complexity: O(1)
 """
 
-import math
-
 class Solution:
-    def minMaxDist(self, stations, k):
-        n = len(stations)
+    def findMedianSortedArrays(
+        self, nums1: list[int], nums2: list[int]
+    ) -> float:
+        n1 = len(nums1)
+        n2 = len(nums2)
 
-        def requiredStations(dist):
-            total = 0
+        if n1 > n2:
+            return self.findMedianSortedArrays(nums2, nums1)
 
-            for i in range(n - 1):
-                gap = stations[i + 1] - stations[i]
-
-                total += math.ceil(gap / dist) - 1
-
-                if total > k:
-                    return total
-
-            return total
+        left = (n1 + n2 + 1) // 2
+        n = n1 + n2
 
         low = 0
-        high = 0
+        high = n1
 
-        for i in range(n - 1):
-            high = max(high, stations[i + 1] - stations[i])
+        while low <= high:
+            mid1 = (low + high) // 2
+            mid2 = left - mid1
 
-        diff = 1e-6
+            l1 = float("-inf")
+            l2 = float("-inf")
 
-        while high - low > diff:
-            mid = (low + high) / 2
+            r1 = float("inf")
+            r2 = float("inf")
 
-            count = requiredStations(mid)
+            if mid1 < n1:
+                r1 = nums1[mid1]
 
-            if count > k:
-                low = mid
+            if mid2 < n2:
+                r2 = nums2[mid2]
+
+            if mid1 - 1 >= 0:
+                l1 = nums1[mid1 - 1]
+
+            if mid2 - 1 >= 0:
+                l2 = nums2[mid2 - 1]
+
+            if l1 <= r2 and l2 <= r1:
+                if n % 2 == 1:
+                    return max(l1, l2)
+
+                return (max(l1, l2) + min(r1, r2)) / 2
+
+            elif l1 > r2:
+                high = mid1 - 1
+
             else:
-                high = mid
+                low = mid1 + 1
 
-        return high
+        return 0

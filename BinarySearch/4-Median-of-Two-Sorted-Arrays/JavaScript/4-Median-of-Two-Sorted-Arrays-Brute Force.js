@@ -1,41 +1,48 @@
 /**
- * Problem: Minimize Max Distance of Adjacent Gas Stations
- * Approach: Brute Force — Greedy Linear Search
- * Time Complexity: O(k * n)
- * Space Complexity: O(n)
+ * Problem: 4. Median of Two Sorted Arrays
+ * Approach: Brute Force — Merge Two Sorted Arrays
+ * Time Complexity: O(n1 + n2)
+ * Space Complexity: O(n1 + n2)
  */
 
 class Solution {
-    minMaxDist(stations, k) {
-        const n = stations.length;
-        const howMany = new Array(n - 1).fill(0);
+    findMedianSortedArrays(nums1, nums2) {
+        let n1 = nums1.length;
+        let n2 = nums2.length;
 
-        for (let gasStations = 1; gasStations <= k; gasStations++) {
-            let maxLength = -1;
-            let maxIndex = -1;
+        let nums3 = [];
+        let n = n1 + n2;
 
-            for (let i = 0; i < n - 1; i++) {
-                let gap = stations[i + 1] - stations[i];
-                let newLength = gap / (howMany[i] + 1);
+        let i = 0;
+        let j = 0;
 
-                if (newLength > maxLength) {
-                    maxLength = newLength;
-                    maxIndex = i;
-                }
+        while (i < n1 && j < n2) {
+            if (nums1[i] < nums2[j]) {
+                nums3.push(nums1[i]);
+                i++;
+            } else {
+                nums3.push(nums2[j]);
+                j++;
             }
-
-            howMany[maxIndex]++;
         }
 
-        let maxAns = -1;
-
-        for (let i = 0; i < n - 1; i++) {
-            let gap = stations[i + 1] - stations[i];
-            let newLength = gap / (howMany[i] + 1);
-
-            maxAns = Math.max(maxAns, newLength);
+        while (i < n1) {
+            nums3.push(nums1[i]);
+            i++;
         }
 
-        return maxAns;
+        while (j < n2) {
+            nums3.push(nums2[j]);
+            j++;
+        }
+
+        if (n % 2 === 1) {
+            return nums3[Math.floor(n / 2)];
+        }
+
+        return (
+            nums3[n / 2] +
+            nums3[n / 2 - 1]
+        ) / 2;
     }
 }

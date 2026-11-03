@@ -15,32 +15,62 @@ class Solution {
         let idx2 = Math.floor(n / 2);
 
         let ele1 = -1;
-        let ele2 = -1;
+        let ele2 = -2;
 
         let count = 0;
         let i = 0;
         let j = 0;
 
-        while (count <= idx2) {
-            let current;
+        while (i < n1 && j < n2) {
+            if (nums1[i] < nums2[j]) {
+                if (count === idx1) {
+                    ele1 = nums1[i];
+                }
 
-            if (i < n1 && (j >= n2 || nums1[i] < nums2[j])) {
-                current = nums1[i];
+                if (count === idx2) {
+                    ele2 = nums1[i];
+                }
+
+                count++;
                 i++;
             } else {
-                current = nums2[j];
+                if (count === idx1) {
+                    ele1 = nums2[j];
+                }
+
+                if (count === idx2) {
+                    ele2 = nums2[j];
+                }
+
+                count++;
                 j++;
             }
+        }
 
+        while (i < n1) {
             if (count === idx1) {
-                ele1 = current;
+                ele1 = nums1[i];
             }
 
             if (count === idx2) {
-                ele2 = current;
+                ele2 = nums1[i];
             }
 
             count++;
+            i++;
+        }
+
+        while (j < n2) {
+            if (count === idx1) {
+                ele1 = nums2[j];
+            }
+
+            if (count === idx2) {
+                ele2 = nums2[j];
+            }
+
+            count++;
+            j++;
         }
 
         if (n % 2 === 1) {

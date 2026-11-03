@@ -17,27 +17,52 @@ class Solution:
         idx2 = n // 2
 
         ele1 = -1
-        ele2 = -1
+        ele2 = -2
 
         count = 0
         i = 0
         j = 0
 
-        while count <= idx2:
-            if i < n1 and (j >= n2 or nums1[i] < nums2[j]):
-                current = nums1[i]
+        while i < n1 and j < n2:
+            if nums1[i] < nums2[j]:
+                if count == idx1:
+                    ele1 = nums1[i]
+
+                if count == idx2:
+                    ele2 = nums1[i]
+
+                count += 1
                 i += 1
+
             else:
-                current = nums2[j]
+                if count == idx1:
+                    ele1 = nums2[j]
+
+                if count == idx2:
+                    ele2 = nums2[j]
+
+                count += 1
                 j += 1
 
+        while i < n1:
             if count == idx1:
-                ele1 = current
+                ele1 = nums1[i]
 
             if count == idx2:
-                ele2 = current
+                ele2 = nums1[i]
 
             count += 1
+            i += 1
+
+        while j < n2:
+            if count == idx1:
+                ele1 = nums2[j]
+
+            if count == idx2:
+                ele2 = nums2[j]
+
+            count += 1
+            j += 1
 
         if n % 2 == 1:
             return ele2

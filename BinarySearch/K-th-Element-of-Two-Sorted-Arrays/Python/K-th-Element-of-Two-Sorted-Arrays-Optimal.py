@@ -1,25 +1,22 @@
 """
-Problem: 4. Median of Two Sorted Arrays
+Problem: K-th Element of Two Sorted Arrays
 Approach: Binary Search on Partition
 Time Complexity: O(log(min(n1, n2)))
 Space Complexity: O(1)
 """
 
 class Solution:
-    def findMedianSortedArrays(
-        self, nums1: list[int], nums2: list[int]
-    ) -> float:
-        n1 = len(nums1)
-        n2 = len(nums2)
+    def kthElement(self, a, b, k):
+        n1 = len(a)
+        n2 = len(b)
 
         if n1 > n2:
-            return self.findMedianSortedArrays(nums2, nums1)
+            return self.kthElement(b, a, k)
 
-        left = (n1 + n2 + 1) // 2
-        n = n1 + n2
+        left = k
 
-        low = 0
-        high = n1
+        low = max(0, k - n2)
+        high = min(k, n1)
 
         while low <= high:
             mid1 = (low + high) // 2
@@ -32,22 +29,19 @@ class Solution:
             r2 = float("inf")
 
             if mid1 < n1:
-                r1 = nums1[mid1]
+                r1 = a[mid1]
 
             if mid2 < n2:
-                r2 = nums2[mid2]
+                r2 = b[mid2]
 
             if mid1 - 1 >= 0:
-                l1 = nums1[mid1 - 1]
+                l1 = a[mid1 - 1]
 
             if mid2 - 1 >= 0:
-                l2 = nums2[mid2 - 1]
+                l2 = b[mid2 - 1]
 
             if l1 <= r2 and l2 <= r1:
-                if n % 2 == 1:
-                    return max(l1, l2)
-
-                return (max(l1, l2) + min(r1, r2)) / 2
+                return max(l1, l2)
 
             elif l1 > r2:
                 high = mid1 - 1

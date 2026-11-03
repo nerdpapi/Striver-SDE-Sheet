@@ -1,48 +1,39 @@
 /**
- * Problem: 4. Median of Two Sorted Arrays
- * Approach: Brute Force — Merge Two Sorted Arrays
+ * Problem: K-th Element of Two Sorted Arrays
+ * Approach: Brute Force — Merge Both Arrays
  * Time Complexity: O(n1 + n2)
  * Space Complexity: O(n1 + n2)
  */
 
 class Solution {
-    findMedianSortedArrays(nums1, nums2) {
-        let n1 = nums1.length;
-        let n2 = nums2.length;
+    kthElement(a, b, k) {
+        let n1 = a.length;
+        let n2 = b.length;
 
-        let nums3 = [];
-        let n = n1 + n2;
-
+        let merged = [];
         let i = 0;
         let j = 0;
 
         while (i < n1 && j < n2) {
-            if (nums1[i] < nums2[j]) {
-                nums3.push(nums1[i]);
+            if (a[i] <= b[j]) {
+                merged.push(a[i]);
                 i++;
             } else {
-                nums3.push(nums2[j]);
+                merged.push(b[j]);
                 j++;
             }
         }
 
         while (i < n1) {
-            nums3.push(nums1[i]);
+            merged.push(a[i]);
             i++;
         }
 
         while (j < n2) {
-            nums3.push(nums2[j]);
+            merged.push(b[j]);
             j++;
         }
 
-        if (n % 2 === 1) {
-            return nums3[Math.floor(n / 2)];
-        }
-
-        return (
-            nums3[n / 2] +
-            nums3[n / 2 - 1]
-        ) / 2;
+        return merged[k - 1];
     }
 }

@@ -1,70 +1,47 @@
 """
-Problem: 4. Median of Two Sorted Arrays
-Approach: Merge Until Median Positions
-Time Complexity: O(n1 + n2)
+Problem: K-th Element of Two Sorted Arrays
+Approach: Merge Until K-th Element
+Time Complexity: O(k)
 Space Complexity: O(1)
 """
 
 class Solution:
-    def findMedianSortedArrays(
-        self, nums1: list[int], nums2: list[int]
-    ) -> float:
-        n1 = len(nums1)
-        n2 = len(nums2)
-        n = n1 + n2
+    def kthElement(self, a, b, k):
+        n1 = len(a)
+        n2 = len(b)
 
-        idx1 = n // 2 - 1
-        idx2 = n // 2
-
-        ele1 = -1
-        ele2 = -2
-
-        count = 0
         i = 0
         j = 0
+        count = 0
+        kth = -1
 
         while i < n1 and j < n2:
-            if nums1[i] < nums2[j]:
-                if count == idx1:
-                    ele1 = nums1[i]
-
-                if count == idx2:
-                    ele2 = nums1[i]
-
-                count += 1
+            if a[i] <= b[j]:
+                kth = a[i]
                 i += 1
-
             else:
-                if count == idx1:
-                    ele1 = nums2[j]
-
-                if count == idx2:
-                    ele2 = nums2[j]
-
-                count += 1
+                kth = b[j]
                 j += 1
 
-        while i < n1:
-            if count == idx1:
-                ele1 = nums1[i]
-
-            if count == idx2:
-                ele2 = nums1[i]
-
             count += 1
+
+            if count == k:
+                return kth
+
+        while i < n1:
+            kth = a[i]
             i += 1
+            count += 1
+
+            if count == k:
+                return kth
 
         while j < n2:
-            if count == idx1:
-                ele1 = nums2[j]
-
-            if count == idx2:
-                ele2 = nums2[j]
-
-            count += 1
+            kth = b[j]
             j += 1
+            count += 1
 
-        if n % 2 == 1:
-            return ele2
+            if count == k:
+                return kth
 
-        return (ele1 + ele2) / 2
+        return kth

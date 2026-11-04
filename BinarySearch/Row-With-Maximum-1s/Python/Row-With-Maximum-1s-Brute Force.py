@@ -6,7 +6,7 @@ Space Complexity: O(1)
 """
 
 class Solution:
-    def rowAndMaximumOnes(self, mat):
+    def rowAndMaximumOnes(self, mat: list[list[int]]) -> int:
         m = len(mat)
         n = len(mat[0])
 

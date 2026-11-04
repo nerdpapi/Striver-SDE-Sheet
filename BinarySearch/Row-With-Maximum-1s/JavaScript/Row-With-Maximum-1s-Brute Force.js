@@ -1,37 +1,48 @@
-/**
- * Problem: Painter's Partition Problem
- * Approach: Brute Force — Check Every Time Limit
- * Time Complexity: O(n * (sum(arr) - max(arr) + 1))
- * Space Complexity: O(1)
- */
+/*
+Problem: Row with Maximum 1s
+Approach: Binary Search - Lower Bound
+Time Complexity: O(m * log n)
+Space Complexity: O(1)
+*/
 
 class Solution {
-    minTime(arr, k) {
-        function countPainters(arr, maxTime) {
-            let painters = 1;
-            let currTime = 0;
+    rowWithMax1s(arr) {
+        const m = arr.length;
+        const n = arr[0].length;
 
-            for (const num of arr) {
-                if (currTime + num > maxTime) {
-                    painters++;
-                    currTime = num;
+        const lowerBound = (row, n, x) => {
+            let low = 0;
+            let high = n - 1;
+            let ans = -1;
+
+            while (low <= high) {
+                let mid = Math.floor((low + high) / 2);
+
+                if (row[mid] >= x) {
+                    ans = mid;
+                    high = mid - 1;
                 } else {
-                    currTime += num;
+                    low = mid + 1;
                 }
             }
 
-            return painters;
-        }
+            return ans;
+        };
 
-        let low = Math.max(...arr);
-        let high = arr.reduce((sum, num) => sum + num, 0);
+        let count_max = 0;
+        let idx = -1;
 
-        for (let time = low; time <= high; time++) {
-            if (countPainters(arr, time) <= k) {
-                return time;
+        for (let i = 0; i < m; i++) {
+            let firstOne = lowerBound(arr[i], n, 1);
+
+            let count_one = firstOne === -1 ? 0 : n - firstOne;
+
+            if (count_one > count_max) {
+                count_max = count_one;
+                idx = i;
             }
         }
 
-        return -1;
+        return idx;
     }
 }

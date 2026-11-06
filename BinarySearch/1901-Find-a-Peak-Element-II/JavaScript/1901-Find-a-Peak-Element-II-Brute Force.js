@@ -1,39 +1,33 @@
-/**
- * Problem: K-th Element of Two Sorted Arrays
- * Approach: Brute Force — Merge Both Arrays
- * Time Complexity: O(n1 + n2)
- * Space Complexity: O(n1 + n2)
- */
+/*
+Problem: Find a Peak Element II
+Approach: Brute Force - Check all 4 directions for each element
+Time Complexity: O(m * n * 4)
+Space Complexity: O(1)
+*/
 
 class Solution {
-    kthElement(a, b, k) {
-        let n1 = a.length;
-        let n2 = b.length;
+    findPeakGrid(mat) {
+        const m = mat.length;
+        const n = mat[0].length;
 
-        let merged = [];
-        let i = 0;
-        let j = 0;
+        for (let i = 0; i < m; i++) {
+            for (let j = 0; j < n; j++) {
+                let up = i > 0 ? mat[i - 1][j] : -1;
+                let down = i + 1 < m ? mat[i + 1][j] : -1;
+                let left = j > 0 ? mat[i][j - 1] : -1;
+                let right = j + 1 < n ? mat[i][j + 1] : -1;
 
-        while (i < n1 && j < n2) {
-            if (a[i] <= b[j]) {
-                merged.push(a[i]);
-                i++;
-            } else {
-                merged.push(b[j]);
-                j++;
+                if (
+                    mat[i][j] > up &&
+                    mat[i][j] > down &&
+                    mat[i][j] > left &&
+                    mat[i][j] > right
+                ) {
+                    return [i, j];
+                }
             }
         }
 
-        while (i < n1) {
-            merged.push(a[i]);
-            i++;
-        }
-
-        while (j < n2) {
-            merged.push(b[j]);
-            j++;
-        }
-
-        return merged[k - 1];
+        return [-1, -1];
     }
 }

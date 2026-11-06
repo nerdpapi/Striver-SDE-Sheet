@@ -1,52 +1,44 @@
 """
-Problem: K-th Element of Two Sorted Arrays
-Approach: Binary Search on Partition
-Time Complexity: O(log(min(n1, n2)))
+Problem: Find a Peak Element II
+Approach: Binary Search on Columns
+Time Complexity: O(m * log n)
 Space Complexity: O(1)
 """
 
 class Solution:
-    def kthElement(self, a, b, k):
-        n1 = len(a)
-        n2 = len(b)
+    def findPeakGrid(self, mat: list[list[int]]) -> list[int]:
+        m = len(mat)
+        n = len(mat[0])
 
-        if n1 > n2:
-            return self.kthElement(b, a, k)
+        def findRowIndex(mat, col):
+            maxVal = float("-inf")
+            index = -1
 
-        left = k
+            for i in range(m):
+                if mat[i][col] > maxVal:
+                    maxVal = mat[i][col]
+                    index = i
 
-        low = max(0, k - n2)
-        high = min(k, n1)
+            return index
+
+        low = 0
+        high = n - 1
 
         while low <= high:
-            mid1 = (low + high) // 2
-            mid2 = left - mid1
+            mid = (low + high) // 2
 
-            l1 = float("-inf")
-            l2 = float("-inf")
+            row = findRowIndex(mat, mid)
 
-            r1 = float("inf")
-            r2 = float("inf")
+            left = mat[row][mid - 1] if mid - 1 >= 0 else -1
+            right = mat[row][mid + 1] if mid + 1 < n else -1
 
-            if mid1 < n1:
-                r1 = a[mid1]
+            if left < mat[row][mid] > right:
+                return [row, mid]
 
-            if mid2 < n2:
-                r2 = b[mid2]
-
-            if mid1 - 1 >= 0:
-                l1 = a[mid1 - 1]
-
-            if mid2 - 1 >= 0:
-                l2 = b[mid2 - 1]
-
-            if l1 <= r2 and l2 <= r1:
-                return max(l1, l2)
-
-            elif l1 > r2:
-                high = mid1 - 1
+            elif mat[row][mid] < left:
+                high = mid - 1
 
             else:
-                low = mid1 + 1
+                low = mid + 1
 
-        return 0
+        return [-1, -1]

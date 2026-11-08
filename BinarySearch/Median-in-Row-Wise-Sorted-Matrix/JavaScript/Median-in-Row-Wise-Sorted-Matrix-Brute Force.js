@@ -1,41 +1,17 @@
-/**
- * Problem: Minimize Max Distance of Adjacent Gas Stations
- * Approach: Brute Force — Greedy Linear Search
- * Time Complexity: O(k * n)
- * Space Complexity: O(n)
- */
+/*
+Problem: Median in a Row-Wise Sorted Matrix
+Approach: Brute Force - Flatten and Sort
+Time Complexity: O(m * n * log(m * n))
+Space Complexity: O(m * n)
+*/
 
 class Solution {
-    minMaxDist(stations, k) {
-        const n = stations.length;
-        const howMany = new Array(n - 1).fill(0);
+    median(mat) {
+        let m = mat.length;
+        let n = mat[0].length;
 
-        for (let gasStations = 1; gasStations <= k; gasStations++) {
-            let maxLength = -1;
-            let maxIndex = -1;
+        let flatArr = mat.flat().sort((a, b) => a - b);
 
-            for (let i = 0; i < n - 1; i++) {
-                let gap = stations[i + 1] - stations[i];
-                let newLength = gap / (howMany[i] + 1);
-
-                if (newLength > maxLength) {
-                    maxLength = newLength;
-                    maxIndex = i;
-                }
-            }
-
-            howMany[maxIndex]++;
-        }
-
-        let maxAns = -1;
-
-        for (let i = 0; i < n - 1; i++) {
-            let gap = stations[i + 1] - stations[i];
-            let newLength = gap / (howMany[i] + 1);
-
-            maxAns = Math.max(maxAns, newLength);
-        }
-
-        return maxAns;
+        return flatArr[Math.floor((m * n) / 2)];
     }
 }

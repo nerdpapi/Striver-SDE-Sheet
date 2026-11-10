@@ -1,54 +1,68 @@
-/**
- * Problem: Minimize Max Distance of Adjacent Gas Stations
- * Approach: Binary Search on Answer
- * Time Complexity: O(n * log(maxGap / epsilon))
- * Space Complexity: O(1)
- */
+/*
+Problem: Median in a Row-Wise Sorted Matrix
+Approach: Binary Search on Answer + Upper Bound
+Time Complexity: O(m * log(n) * log(maxVal - minVal + 1))
+Space Complexity: O(1)
+*/
 
 class Solution {
-    minMaxDist(stations, k) {
-        const n = stations.length;
+    median(mat) {
+        let m = mat.length;
+        let n = mat[0].length;
 
-        function requiredStations(dist) {
-            let total = 0;
+        const upperBound = (arr, target) => {
+            let low = 0;
+            let high = n - 1;
+            let ans = n;
 
-            for (let i = 0; i < n - 1; i++) {
-                let gap = stations[i + 1] - stations[i];
+            while (low <= high) {
+                let mid = Math.floor((low + high) / 2);
 
-                total += Math.ceil(gap / dist) - 1;
-
-                if (total > k) {
-                    return total;
+                if (arr[mid] > target) {
+                    ans = mid;
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
                 }
             }
 
-            return total;
+            return ans;
+        };
+
+        const countSmallEqual = (mat, x) => {
+            let cnt = 0;
+
+            for (let i = 0; i < m; i++) {
+                cnt += upperBound(mat[i], x);
+            }
+
+            return cnt;
+        };
+
+        let low = Infinity;
+        let high = -Infinity;
+
+        for (let i = 0; i < m; i++) {
+            low = Math.min(low, mat[i][0]);
+            high = Math.max(high, mat[i][n - 1]);
         }
 
-        let low = 0;
-        let high = 0;
+        let req = Math.floor((m * n) / 2);
+        let ans = -1;
 
-        for (let i = 0; i < n - 1; i++) {
-            high = Math.max(
-                high,
-                stations[i + 1] - stations[i]
-            );
-        }
+        while (low <= high) {
+            let mid = Math.floor((low + high) / 2);
 
-        const diff = 1e-6;
+            let smallEqual = countSmallEqual(mat, mid);
 
-        while (high - low > diff) {
-            let mid = (low + high) / 2;
-
-            let count = requiredStations(mid);
-
-            if (count > k) {
-                low = mid;
+            if (smallEqual > req) {
+                ans = mid;
+                high = mid - 1;
             } else {
-                high = mid;
+                low = mid + 1;
             }
         }
 
-        return high;
+        return ans;
     }
 }

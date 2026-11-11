@@ -1,20 +1,19 @@
 /*
-Problem: Two Sum II - Input Array Is Sorted
-Approach: Brute Force - Nested Loops
-Time Complexity: O(n^2)
-Space Complexity: O(1)
+Problem: Reverse String
+Approach: Brute Force - Extra Array
+Time Complexity: O(n)
+Space Complexity: O(n)
 */
 
-var twoSum = function(numbers, target) {
-    let n = numbers.length;
+var reverseString = function(s) {
+    let n = s.length;
+    let rev = [];
 
-    for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
-            if (numbers[i] + numbers[j] === target) {
-                return [i + 1, j + 1];
-            }
-        }
+    for (let i = n - 1; i >= 0; i--) {
+        rev.push(s[i]);
     }
 
-    return [];
+    for (let i = 0; i < n; i++) {
+        s[i] = rev[i];
+    }
 };

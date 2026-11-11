@@ -1,31 +1,22 @@
 /*
-Problem: Two Sum II - Input Array Is Sorted
-Approach: Two Pointers
+Problem: Reverse String
+Approach: Two Pointers - In-Place
 Time Complexity: O(n)
 Space Complexity: O(1)
 */
 
-/**
- * @param {number[]} numbers
- * @param {number} target
- * @return {number[]}
- */
+var reverseString = function(s) {
+    let n = s.length;
 
-var twoSum = function(numbers, target) {
-    let l = 0;
-    let r = numbers.length - 1;
+    let left = 0;
+    let right = n - 1;
 
-    while (l < r) {
-        let s = numbers[l] + numbers[r];
+    while (left < right) {
+        let temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
 
-        if (s === target) {
-            return [l + 1, r + 1];
-        } else if (s > target) {
-            r--;
-        } else {
-            l++;
-        }
+        left++;
+        right--;
     }
-
-    return [];
 };

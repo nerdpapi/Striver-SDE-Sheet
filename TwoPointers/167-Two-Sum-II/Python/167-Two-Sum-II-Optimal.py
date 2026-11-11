@@ -1,38 +1,25 @@
 """
-Problem: 5. Longest Palindromic Substring
-Approach: Expand Around Center
-
-Time Complexity: O(n^2)
+Problem: Two Sum II - Input Array Is Sorted
+Approach: Two Pointers
+Time Complexity: O(n)
 Space Complexity: O(1)
 """
 
 class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        start = 0
-        max_len = 0
+    def twoSum(self, numbers: list[int], target: int) -> list[int]:
+        l = 0
+        r = len(numbers) - 1
 
-        for i in range(len(s)):
-            # Odd-length palindrome
-            l = r = i
+        while l < r:
+            s = numbers[l] + numbers[r]
 
-            while l >= 0 and r < len(s) and s[l] == s[r]:
-                if r - l + 1 > max_len:
-                    start = l
-                    max_len = r - l + 1
+            if s == target:
+                return [l + 1, r + 1]
 
-                l -= 1
-                r += 1
+            elif s > target:
+                r -= 1
 
-            # Even-length palindrome
-            l = i
-            r = i + 1
+            else:
+                l += 1
 
-            while l >= 0 and r < len(s) and s[l] == s[r]:
-                if r - l + 1 > max_len:
-                    start = l
-                    max_len = r - l + 1
-
-                l -= 1
-                r += 1
-
-        return s[start:start + max_len]
+        return []

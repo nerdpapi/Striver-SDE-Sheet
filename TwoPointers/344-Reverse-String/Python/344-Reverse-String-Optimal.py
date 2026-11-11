@@ -1,25 +1,21 @@
 """
-Problem: Two Sum II - Input Array Is Sorted
-Approach: Two Pointers
+Problem: Reverse String
+Approach: Two Pointers - In-Place
 Time Complexity: O(n)
 Space Complexity: O(1)
 """
 
 class Solution:
-    def twoSum(self, numbers: list[int], target: int) -> list[int]:
-        l = 0
-        r = len(numbers) - 1
+    def reverseString(self, s: list[str]) -> None:
+        n = len(s)
 
-        while l < r:
-            s = numbers[l] + numbers[r]
+        left = 0
+        right = n - 1
 
-            if s == target:
-                return [l + 1, r + 1]
+        while left < right:
+            temp = s[left]
+            s[left] = s[right]
+            s[right] = temp
 
-            elif s > target:
-                r -= 1
-
-            else:
-                l += 1
-
-        return []
+            left += 1
+            right -= 1

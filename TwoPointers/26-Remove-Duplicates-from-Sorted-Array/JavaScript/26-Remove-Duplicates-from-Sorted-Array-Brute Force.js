@@ -1,26 +1,25 @@
+/*
+Problem: Remove Duplicates from Sorted Array
+Approach: Brute Force - Temporary Array
+Time Complexity: O(n^2)
+Space Complexity: O(n)
+*/
 
-/**
- * Problem: 283. Move Zeroes
- * Approach: Temporary Array
- * Time Complexity: O(n)
- * Space Complexity: O(n)
- */
-
-var moveZeroes = function(nums) {
-    const n = nums.length;
+var removeDuplicates = function(nums) {
+    let n = nums.length;
     let temp = [];
 
     for (let i = 0; i < n; i++) {
-        if (nums[i] !== 0) {
+        if (!temp.includes(nums[i])) {
             temp.push(nums[i]);
         }
     }
-    for (let i = 0; i < n; i++) {
-        if (nums[i] === 0) {
-            temp.push(nums[i]);
-        }
-    }
-    for (let i = 0; i < n; i++) {
+
+    let k = temp.length;
+
+    for (let i = 0; i < k; i++) {
         nums[i] = temp[i];
     }
+
+    return k;
 };

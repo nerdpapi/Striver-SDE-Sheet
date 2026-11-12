@@ -1,7 +1,9 @@
-/**
- * @param {string} s
- * @return {boolean}
- */
+/*
+Problem: Valid Palindrome
+Approach: Two Pointers
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
 var isPalindrome = function(s) {
     let left = 0;
     let right = s.length - 1;

@@ -1,9 +1,16 @@
-/**
- * @param {string} s
- * @return {boolean}
- */
-var isPalindrome = function(s) {
-    const cleared = s.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+"""
+Problem: Valid Palindrome
+Approach: Brute Force - Clean and Reverse
+Time Complexity: O(n)
+Space Complexity: O(n)
+"""
 
-    return cleared === cleared.split("").reverse().join("");
-};
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        cleaned = ""
+
+        for ch in s:
+            if ch.isalnum():
+                cleaned += ch.lower()
+
+        return cleaned == cleaned[::-1]

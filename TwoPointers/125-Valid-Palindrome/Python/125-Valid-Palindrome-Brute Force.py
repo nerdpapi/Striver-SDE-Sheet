@@ -1,6 +1,16 @@
-import re
+"""
+Problem: Valid Palindrome
+Approach: Brute Force - Clean and Reverse
+Time Complexity: O(n)
+Space Complexity: O(n)
+"""
 
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        cleared = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
-        return cleared == cleared[::-1]
+        cleaned = ""
+
+        for ch in s:
+            if ch.isalnum():
+                cleaned += ch.lower()
+
+        return cleaned == cleaned[::-1]

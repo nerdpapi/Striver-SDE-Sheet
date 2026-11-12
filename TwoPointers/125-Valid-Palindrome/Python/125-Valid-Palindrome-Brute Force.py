@@ -7,10 +7,11 @@ Space Complexity: O(n)
 
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        cleaned = ""
+        cleaned = []
 
         for ch in s:
             if ch.isalnum():
-                cleaned += ch.lower()
+                cleaned.append(ch.lower())
 
+        cleaned = "".join(cleaned)
         return cleaned == cleaned[::-1]

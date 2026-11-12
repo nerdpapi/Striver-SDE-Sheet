@@ -1,16 +1,18 @@
-"""
+/*
 Problem: Valid Palindrome
 Approach: Brute Force - Clean and Reverse
 Time Complexity: O(n)
 Space Complexity: O(n)
-"""
+*/
 
-class Solution:
-    def isPalindrome(self, s: str) -> bool:
-        cleaned = ""
+var isPalindrome = function(s) {
+    let cleaned = "";
 
-        for ch in s:
-            if ch.isalnum():
-                cleaned += ch.lower()
+    for (let ch of s) {
+        if (/[a-zA-Z0-9]/.test(ch)) {
+            cleaned += ch.toLowerCase();
+        }
+    }
 
-        return cleaned == cleaned[::-1]
+    return cleaned === cleaned.split("").reverse().join("");
+};

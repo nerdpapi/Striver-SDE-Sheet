@@ -2,7 +2,7 @@
 Problem: Trapping Rain Water Brute Force
 Approach: Prefix and Suffix Maximum Arrays
 Time Complexity: O(n²)
-Space Complexity: O(n)
+Space Complexity: O(1)
 */ 
 
 class Solution {

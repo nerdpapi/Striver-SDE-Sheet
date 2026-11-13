@@ -1,25 +1,40 @@
 """
-Problem: Valid Palindrome
+Problem: Trapping Rain Water
 Approach: Two Pointers
 Time Complexity: O(n)
 Space Complexity: O(1)
 """
 
 class Solution:
-    def isPalindrome(self, s: str) -> bool:
-        left, right = 0, len(s) - 1
+    def trap(self, height: list[int]) -> int:
+        n = len(height)
+
+        left = 0
+        right = n - 1
+
+        lMax = 0
+        rMax = 0
+
+        total = 0
 
         while left < right:
-            while left < right and not s[left].isalnum():
+
+            if height[left] <= height[right]:
+
+                if lMax > height[left]:
+                    total += lMax - height[left]
+                else:
+                    lMax = height[left]
+
                 left += 1
 
-            while left < right and not s[right].isalnum():
+            else:
+
+                if rMax > height[right]:
+                    total += rMax - height[right]
+                else:
+                    rMax = height[right]
+
                 right -= 1
 
-            if s[left].lower() != s[right].lower():
-                return False
-
-            left += 1
-            right -= 1
-
-        return True
+        return total

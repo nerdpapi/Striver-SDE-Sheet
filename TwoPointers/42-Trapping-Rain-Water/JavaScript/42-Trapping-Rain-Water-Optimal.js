@@ -1,29 +1,44 @@
 /*
-Problem: Valid Palindrome
+Problem: Trapping Rain Water
 Approach: Two Pointers
 Time Complexity: O(n)
 Space Complexity: O(1)
 */
-var isPalindrome = function(s) {
+
+var trap = function(height) {
+    let n = height.length;
+
     let left = 0;
-    let right = s.length - 1;
+    let right = n - 1;
+
+    let lMax = 0;
+    let rMax = 0;
+
+    let total = 0;
 
     while (left < right) {
-        while (left < right && !/[a-zA-Z0-9]/.test(s[left])) {
-            left++;
-        }
 
-        while (left < right && !/[a-zA-Z0-9]/.test(s[right])) {
+        if (height[left] <= height[right]) {
+
+            if (lMax > height[left]) {
+                total += lMax - height[left];
+            } else {
+                lMax = height[left];
+            }
+
+            left++;
+
+        } else {
+
+            if (rMax > height[right]) {
+                total += rMax - height[right];
+            } else {
+                rMax = height[right];
+            }
+
             right--;
         }
-
-        if (s[left].toLowerCase() !== s[right].toLowerCase()) {
-            return false;
-        }
-
-        left++;
-        right--;
     }
 
-    return true;
+    return total;
 };

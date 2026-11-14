@@ -1,38 +1,21 @@
-/**
- * Problem: Longest Subarray with Sum K
- * Approach: Optimal - Sliding Window
- *
- * Works when all elements are non-negative.
- *
- * Time Complexity: O(n)
- * Space Complexity: O(1)
- */
+// Optimal: O(n) Time, O(1) Space
+// Sliding Window using while
 
-/**
- * @param {number[]} nums
- * @param {number} k
- * @return {number}
- */
 var longestSubarray = function(nums, k) {
     let left = 0;
-    let currSum = 0;
-    let length = 0;
+    let total = 0;
+    let maxLen = 0;
 
     for (let right = 0; right < nums.length; right++) {
-        currSum += nums[right];
+        total += nums[right];
 
-        while (currSum > k && left <= right) {
-            currSum -= nums[left];
+        while (total > k) {
+            total -= nums[left];
             left++;
         }
 
-        if (currSum === k) {
-            length = Math.max(
-                length,
-                right - left + 1
-            );
-        }
+        maxLen = Math.max(maxLen, right - left + 1);
     }
 
-    return length;
+    return maxLen;
 };

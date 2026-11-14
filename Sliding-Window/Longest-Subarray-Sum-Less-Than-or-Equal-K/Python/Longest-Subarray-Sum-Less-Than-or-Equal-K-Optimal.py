@@ -1,30 +1,19 @@
-"""
-Problem: Longest Subarray with Sum K
-Approach: Optimal - Sliding Window
-
-This approach works when all array elements are non-negative.
-
-Expand the window using right.
-If the sum becomes greater than k, shrink from the left.
-
-Time Complexity: O(n)
-Space Complexity: O(1)
-"""
+# Optimal: O(n) Time, O(1) Space
+# Sliding Window using while
 
 class Solution:
     def longestSubarray(self, nums: list[int], k: int) -> int:
         left = 0
-        curr_sum = 0
-        length = 0
+        total = 0
+        maxLen = 0
 
         for right in range(len(nums)):
-            curr_sum += nums[right]
+            total += nums[right]
 
-            while curr_sum > k and left <= right:
-                curr_sum -= nums[left]
+            while total > k:
+                total -= nums[left]
                 left += 1
 
-            if curr_sum == k:
-                length = max(length, right - left + 1)
+            maxLen = max(maxLen, right - left + 1)
 
-        return length
+        return maxLen

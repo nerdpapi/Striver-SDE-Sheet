@@ -1,44 +1,23 @@
-/**
- * Problem: Longest Substring With At Most K Distinct Characters
- * Approach: Sliding Window + Frequency Map
- *
- * Time Complexity: O(n)
- * Space Complexity: O(k)
- */
+// Brute Force: O(k²) Time, O(1) Space
 
-/**
- * @param {string} s
- * @param {number} k
- * @return {number}
- */
-class Solution {
-    longestKSubstr(s, k) {
-        let l = 0;
-        let r = 0;
-        const freqMap = new Map();
-        let maxLen = 0;
+var maxScore = function(cardPoints, k) {
+    let n = cardPoints.length;
+    let maxSum = 0;
 
-        while (r < s.length) {
-            freqMap.set(s[r], (freqMap.get(s[r]) || 0) + 1);
+    for (let leftCount = 0; leftCount <= k; leftCount++) {
+        let rightCount = k - leftCount;
+        let total = 0;
 
-            while (freqMap.size > k) {
-                const ch = s[l];
-                freqMap.set(ch, freqMap.get(ch) - 1);
-
-                if (freqMap.get(ch) === 0) {
-                    freqMap.delete(ch);
-                }
-
-                l++;
-            }
-
-            if (freqMap.size <= k) {
-                maxLen = Math.max(maxLen, r - l + 1);
-            }
-
-            r++;
+        for (let i = 0; i < leftCount; i++) {
+            total += cardPoints[i];
         }
 
-        return maxLen > 0 ? maxLen : -1;
+        for (let i = n - rightCount; i < n; i++) {
+            total += cardPoints[i];
+        }
+
+        maxSum = Math.max(maxSum, total);
     }
-}
+
+    return maxSum;
+};

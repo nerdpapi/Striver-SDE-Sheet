@@ -1,21 +1,26 @@
-# Brute Force: O(k²) Time, O(1) Space
+# Optimal: O(k) Time, O(1) Space
+# Sliding Window / Two Pointers
 
 class Solution:
     def maxScore(self, cardPoints: list[int], k: int) -> int:
-        n = len(cardPoints)
+        lSum = 0
+        rSum = 0
         maxSum = 0
 
-        for leftCount in range(k + 1):
-            rightCount = k - leftCount
+        n = len(cardPoints)
 
-            total = 0
+        for i in range(k):
+            lSum += cardPoints[i]
 
-            for i in range(leftCount):
-                total += cardPoints[i]
+        maxSum = lSum
+        rIndex = n - 1
 
-            for i in range(n - rightCount, n):
-                total += cardPoints[i]
+        for j in range(k - 1, -1, -1):
+            lSum -= cardPoints[j]
+            rSum += cardPoints[rIndex]
 
-            maxSum = max(maxSum, total)
+            rIndex -= 1
+
+            maxSum = max(maxSum, lSum + rSum)
 
         return maxSum

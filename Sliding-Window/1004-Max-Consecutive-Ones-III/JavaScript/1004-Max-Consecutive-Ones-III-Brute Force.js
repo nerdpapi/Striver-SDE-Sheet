@@ -1,32 +1,24 @@
-/**
- * Problem: Longest Subarray with Sum K
- * Approach: Brute Force
- *
- * Generate every subarray and maintain its sum.
- *
- * Time Complexity: O(n^2)
- * Space Complexity: O(1)
- */
+// Brute Force: O(n²) Time, O(1) Space
 
-/**
- * @param {number[]} nums
- * @param {number} k
- * @return {number}
- */
-var longestSubarray = function(nums, k) {
-    let longest = 0;
+var longestOnes = function(nums, k) {
+    let maxLen = 0;
+    let n = nums.length;
 
-    for (let i = 0; i < nums.length; i++) {
-        let currentSum = 0;
+    for (let i = 0; i < n; i++) {
+        let zeroes = 0;
 
-        for (let j = i; j < nums.length; j++) {
-            currentSum += nums[j];
+        for (let j = i; j < n; j++) {
+            if (nums[j] === 0) {
+                zeroes++;
+            }
 
-            if (currentSum === k) {
-                longest = Math.max(longest, j - i + 1);
+            if (zeroes <= k) {
+                maxLen = Math.max(maxLen, j - i + 1);
+            } else {
+                break;
             }
         }
     }
 
-    return longest;
+    return maxLen;
 };

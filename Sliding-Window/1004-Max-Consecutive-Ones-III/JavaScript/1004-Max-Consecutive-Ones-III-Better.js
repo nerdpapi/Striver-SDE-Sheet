@@ -1,42 +1,27 @@
-/**
- * Problem: Longest Subarray with Sum K
- * Approach: Better - Prefix Sum + HashMap
- *
- * Store the first occurrence of every prefix sum.
- *
- * Time Complexity: O(n)
- * Space Complexity: O(n)
- */
+// Better: O(n) Time, O(1) Space
+// Sliding Window using while
 
-/**
- * @param {number[]} arr
- * @param {number} k
- * @return {number}
- */
-var longestSubarray = function(arr, k) {
-    const firstSeen = new Map();
+var longestOnes = function(nums, k) {
+    let maxLen = 0;
+    let left = 0;
+    let zeroes = 0;
 
-    let length = 0;
-    let prefixSum = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-        prefixSum += arr[i];
-
-        if (prefixSum === k) {
-            length = i + 1;
+    for (let right = 0; right < nums.length; right++) {
+        if (nums[right] === 0) {
+            zeroes++;
         }
 
-        if (firstSeen.has(prefixSum - k)) {
-            length = Math.max(
-                length,
-                i - firstSeen.get(prefixSum - k)
-            );
+        while (zeroes > k) {
+            if (nums[left] === 0) {
+                zeroes--;
+            }
+
+            left++;
         }
 
-        if (!firstSeen.has(prefixSum)) {
-            firstSeen.set(prefixSum, i);
-        }
+        let length = right - left + 1;
+        maxLen = Math.max(maxLen, length);
     }
 
-    return length;
+    return maxLen;
 };

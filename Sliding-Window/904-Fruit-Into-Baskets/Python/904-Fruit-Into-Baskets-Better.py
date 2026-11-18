@@ -1,24 +1,24 @@
-# Better: O(n) Time, O(1) Space
-# Sliding Window using while
+from collections import defaultdict
 
 class Solution:
-    def longestOnes(self, nums: list[int], k: int) -> int:
+    def totalFruit(self, fruits: list[int]) -> int:
         maxLen = 0
-        n = len(nums)
+        n = len(fruits)
+
+        f_type = defaultdict(int)
         left = 0
-        zeroes = 0
 
         for right in range(n):
-            if nums[right] == 0:
-                zeroes += 1
+            f_type[fruits[right]] += 1
 
-            while zeroes > k:
-                if nums[left] == 0:
-                    zeroes -= 1
+            while len(f_type) > 2:
+                f_type[fruits[left]] -= 1
+
+                if f_type[fruits[left]] == 0:
+                    del f_type[fruits[left]]
 
                 left += 1
 
-            length = right - left + 1
-            maxLen = max(maxLen, length)
+            maxLen = max(maxLen, right - left + 1)
 
         return maxLen

@@ -1,26 +1,28 @@
-// Better: O(n) Time, O(1) Space
-// Sliding Window using while
-
-var longestOnes = function(nums, k) {
+var totalFruit = function(fruits) {
     let maxLen = 0;
+    let n = fruits.length;
+
+    let f_type = new Map();
     let left = 0;
-    let zeroes = 0;
 
-    for (let right = 0; right < nums.length; right++) {
-        if (nums[right] === 0) {
-            zeroes++;
-        }
+    for (let right = 0; right < n; right++) {
+        let fruit = fruits[right];
 
-        while (zeroes > k) {
-            if (nums[left] === 0) {
-                zeroes--;
+        f_type.set(fruit, (f_type.get(fruit) || 0) + 1);
+
+        while (f_type.size > 2) {
+            let leftFruit = fruits[left];
+
+            f_type.set(leftFruit, f_type.get(leftFruit) - 1);
+
+            if (f_type.get(leftFruit) === 0) {
+                f_type.delete(leftFruit);
             }
 
             left++;
         }
 
-        let length = right - left + 1;
-        maxLen = Math.max(maxLen, length);
+        maxLen = Math.max(maxLen, right - left + 1);
     }
 
     return maxLen;

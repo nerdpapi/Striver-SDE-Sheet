@@ -1,25 +1,31 @@
-from collections import defaultdict
+var totalFruit = function(fruits) {
+    let maxLen = 0;
+    let n = fruits.length;
 
-class Solution:
-    def totalFruit(self, fruits: list[int]) -> int:
-        maxLen = 0
-        n = len(fruits)
+    let f_type = new Map();
+    let left = 0;
 
-        f_type = defaultdict(int)
-        left = 0
+    for (let right = 0; right < n; right++) {
+        let fruit = fruits[right];
 
-        for right in range(n):
-            f_type[fruits[right]] += 1
+        f_type.set(fruit, (f_type.get(fruit) || 0) + 1);
 
-            if len(f_type) > 2:
-                f_type[fruits[left]] -= 1
+        if (f_type.size > 2) {
+            let leftFruit = fruits[left];
 
-                if f_type[fruits[left]] == 0:
-                    del f_type[fruits[left]]
+            f_type.set(leftFruit, f_type.get(leftFruit) - 1);
 
-                left += 1
+            if (f_type.get(leftFruit) === 0) {
+                f_type.delete(leftFruit);
+            }
 
-            if len(f_type) <= 2:
-                maxLen = max(maxLen, right - left + 1)
+            left++;
+        }
 
-        return maxLen
+        if (f_type.size <= 2) {
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+    }
+
+    return maxLen;
+};

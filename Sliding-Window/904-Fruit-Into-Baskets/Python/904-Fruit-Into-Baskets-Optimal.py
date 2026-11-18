@@ -1,25 +1,25 @@
-# Optimal: O(n) Time, O(1) Space
-# Sliding Window using if
+from collections import defaultdict
 
 class Solution:
-    def longestOnes(self, nums: list[int], k: int) -> int:
+    def totalFruit(self, fruits: list[int]) -> int:
         maxLen = 0
-        n = len(nums)
+        n = len(fruits)
+
+        f_type = defaultdict(int)
         left = 0
-        zeroes = 0
 
         for right in range(n):
-            if nums[right] == 0:
-                zeroes += 1
+            f_type[fruits[right]] += 1
 
-            if zeroes > k:
-                if nums[left] == 0:
-                    zeroes -= 1
+            if len(f_type) > 2:
+                f_type[fruits[left]] -= 1
+
+                if f_type[fruits[left]] == 0:
+                    del f_type[fruits[left]]
 
                 left += 1
 
-            if zeroes <= k:
-                length = right - left + 1
-                maxLen = max(maxLen, length)
+            if len(f_type) <= 2:
+                maxLen = max(maxLen, right - left + 1)
 
         return maxLen

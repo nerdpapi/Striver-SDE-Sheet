@@ -1,19 +1,16 @@
-// Brute Force: O(n²) Time, O(1) Space
-
-var longestOnes = function(nums, k) {
+var totalFruit = function(fruits) {
     let maxLen = 0;
-    let n = nums.length;
+    let n = fruits.length;
 
     for (let i = 0; i < n; i++) {
-        let zeroes = 0;
+        let f_type = new Set();
 
         for (let j = i; j < n; j++) {
-            if (nums[j] === 0) {
-                zeroes++;
-            }
+            f_type.add(fruits[j]);
 
-            if (zeroes <= k) {
-                maxLen = Math.max(maxLen, j - i + 1);
+            if (f_type.size <= 2) {
+                let length = j - i + 1;
+                maxLen = Math.max(maxLen, length);
             } else {
                 break;
             }

@@ -1,5 +1,5 @@
 /*
- * Problem: Longest Substring With At Most K Distinct Characters
+ * Problem: Longest Substring with K Uniques
  * Approach: Optimized Sliding Window + Frequency Map (If)
  *
  * Time Complexity: O(n)
@@ -7,7 +7,7 @@
  */
 
 var longestKSubstr = function(s, k) {
-    let maxLen = 0;
+    let maxLen = -1;
     let n = s.length;
 
     let freq_map = new Map();
@@ -30,7 +30,7 @@ var longestKSubstr = function(s, k) {
             left++;
         }
 
-        if (freq_map.size <= k) {
+        if (freq_map.size === k) {
             maxLen = Math.max(maxLen, right - left + 1);
         }
     }

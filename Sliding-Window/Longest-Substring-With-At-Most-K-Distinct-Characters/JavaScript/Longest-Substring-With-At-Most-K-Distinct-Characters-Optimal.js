@@ -1,44 +1,39 @@
-/**
+/*
  * Problem: Longest Substring With At Most K Distinct Characters
- * Approach: Sliding Window + Frequency Map
+ * Approach: Optimized Sliding Window + Frequency Map (If)
  *
  * Time Complexity: O(n)
  * Space Complexity: O(k)
  */
 
-/**
- * @param {string} s
- * @param {number} k
- * @return {number}
- */
-class Solution {
-    longestKSubstr(s, k) {
-        let l = 0;
-        let r = 0;
-        const freqMap = new Map();
-        let maxLen = 0;
+var longestKSubstr = function(s, k) {
+    let maxLen = 0;
+    let n = s.length;
 
-        while (r < s.length) {
-            freqMap.set(s[r], (freqMap.get(s[r]) || 0) + 1);
+    let freq_map = new Map();
+    let left = 0;
 
-            while (freqMap.size > k) {
-                const ch = s[l];
-                freqMap.set(ch, freqMap.get(ch) - 1);
+    for (let right = 0; right < n; right++) {
+        let ch = s[right];
 
-                if (freqMap.get(ch) === 0) {
-                    freqMap.delete(ch);
-                }
+        freq_map.set(ch, (freq_map.get(ch) || 0) + 1);
 
-                l++;
+        if (freq_map.size > k) {
+            let leftChar = s[left];
+
+            freq_map.set(leftChar, freq_map.get(leftChar) - 1);
+
+            if (freq_map.get(leftChar) === 0) {
+                freq_map.delete(leftChar);
             }
 
-            if (freqMap.size <= k) {
-                maxLen = Math.max(maxLen, r - l + 1);
-            }
-
-            r++;
+            left++;
         }
 
-        return maxLen > 0 ? maxLen : -1;
+        if (freq_map.size <= k) {
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
     }
-}
+
+    return maxLen;
+};

@@ -1,6 +1,6 @@
 """
 *
-* Problem: Longest Substring With At Most K Distinct Characters
+* Problem: Longest Substring with K Uniques
 * Approach: Optimized Sliding Window + Frequency Map (If)
 *
 * Time Complexity: O(n)
@@ -12,7 +12,7 @@ from collections import defaultdict
 
 class Solution:
     def longestKSubstr(self, s: str, k: int) -> int:
-        maxLen = 0
+        maxLen = -1
         n = len(s)
 
         freq_map = defaultdict(int)
@@ -29,7 +29,7 @@ class Solution:
 
                 left += 1
 
-            if len(freq_map) <= k:
+            if len(freq_map) == k:
                 maxLen = max(maxLen, right - left + 1)
 
         return maxLen

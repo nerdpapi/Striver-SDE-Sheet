@@ -1,17 +1,24 @@
+"""
+*
+* Problem: Number of Substrings Containing All Three Characters
+* Approach: Last Seen Index + Minimum Position
+*
+* Time Complexity: O(n)
+* Space Complexity: O(1)
+*
+"""
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        left = 0
-        max_len = 0
-        hash_array = [-1] * 256
+    def numberOfSubstrings(self, s: str) -> int:
+        n = len(s)
+        count = 0
 
-        for right in range(len(s)):
-            index = ord(s[right])
+        hash_arr = [-1] * 3
 
-            if hash_array[index] >= left:
-                left = hash_array[index] + 1
+        for i in range(n):
+            index = ord(s[i]) - ord('a')
+            hash_arr[index] = i
 
-            hash_array[index] = right
+            count += 1 + min(hash_arr[0], hash_arr[1], hash_arr[2])
 
-            max_len = max(max_len, right - left + 1)
-
-        return max_len
+        return count

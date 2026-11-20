@@ -1,25 +1,28 @@
-/**
- * @param {string} s
- * @return {number}
+/*
+ * Problem: Number of Substrings Containing All Three Characters
+ * Approach: Brute Force + Character Presence Array
+ *
+ * Time Complexity: O(n^2)
+ * Space Complexity: O(1)
  */
-var lengthOfLongestSubstring = function(s) {
-    let maxLen = 0;
-    const n = s.length;
+
+var numberOfSubstrings = function(s) {
+    let n = s.length;
+    let count = 0;
 
     for (let i = 0; i < n; i++) {
-        const hash = {};
+        let hash_arr = [0, 0, 0];
 
         for (let j = i; j < n; j++) {
-            const char = s[j];
+            let index = s.charCodeAt(j) - 97;
+            hash_arr[index] = 1;
 
-            if (hash[char] === 1) break;
-
-            hash[char] = 1;
-
-            const len = j - i + 1;
-            maxLen = Math.max(maxLen, len);
+            if (hash_arr[0] + hash_arr[1] + hash_arr[2] === 3) {
+                count += n - j;
+                break;
+            }
         }
     }
 
-    return maxLen;
+    return count;
 };

@@ -1,23 +1,28 @@
-/**
- * @param {string} s
- * @return {number}
+/*
+ * Problem: Number of Substrings Containing All Three Characters
+ * Approach: Last Seen Index + Minimum Position
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
  */
-var lengthOfLongestSubstring = function(s) {
-    let left = 0;
-    let maxLen = 0;
-    const hashArray = new Array(256).fill(-1);
 
-    for (let right = 0; right < s.length; right++) {
-        const index = s.charCodeAt(right);
+var numberOfSubstrings = function(s) {
+    let n = s.length;
+    let count = 0;
 
-        if (hashArray[index] >= left) {
-            left = hashArray[index] + 1;
-        }
+    let hash_arr = [-1, -1, -1];
 
-        hashArray[index] = right;
+    for (let i = 0; i < n; i++) {
+        let index = s.charCodeAt(i) - 97;
 
-        maxLen = Math.max(maxLen, right - left + 1);
+        hash_arr[index] = i;
+
+        count += 1 + Math.min(
+            hash_arr[0],
+            hash_arr[1],
+            hash_arr[2]
+        );
     }
 
-    return maxLen;
+    return count;
 };

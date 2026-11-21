@@ -1,28 +1,34 @@
 """
 *
-* Problem: Number of Substrings Containing All Three Characters
-* Approach: Sliding Window + Frequency Map
+* Problem: Longest Repeating Character Replacement
+* Approach: Sliding Window + Frequency Array (While)
 *
 * Time Complexity: O(n)
-* Space Complexity: O(1)
+* Space Complexity: O(26) = O(1)
 *
 """
 
 class Solution:
-    def numberOfSubstrings(self, s: str) -> int:
-        count = {'a': 0, 'b': 0, 'c': 0}
-
-        left = 0
-        ans = 0
+    def characterReplacement(self, s: str, k: int) -> int:
+        maxLen = 0
         n = len(s)
 
+        left = 0
+        hash_arr = [0] * 26
+        maxFrq = 0
+
         for right in range(n):
-            count[s[right]] += 1
+            index = ord(s[right]) - ord("A")
 
-            while count['a'] > 0 and count['b'] > 0 and count['c'] > 0:
-                ans += n - right
+            hash_arr[index] += 1
+            maxFrq = max(maxFrq, hash_arr[index])
 
-                count[s[left]] -= 1
+            while (right - left + 1) - maxFrq > k:
+                left_index = ord(s[left]) - ord("A")
+
+                hash_arr[left_index] -= 1
                 left += 1
 
-        return ans
+            maxLen = max(maxLen, right - left + 1)
+
+        return maxLen

@@ -1,28 +1,42 @@
 /*
- * Problem: Number of Substrings Containing All Three Characters
- * Approach: Last Seen Index + Minimum Position
+ * Problem: Longest Repeating Character Replacement
+ * Approach: Optimized Sliding Window + Frequency Map (If)
  *
  * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Space Complexity: O(26) = O(1)
  */
 
-var numberOfSubstrings = function(s) {
+var characterReplacement = function(s, k) {
+    let maxLen = 0;
     let n = s.length;
-    let count = 0;
 
-    let hash_arr = [-1, -1, -1];
+    let left = 0;
+    let freq_map = new Map();
+    let maxFrq = 0;
 
-    for (let i = 0; i < n; i++) {
-        let index = s.charCodeAt(i) - 97;
+    for (let right = 0; right < n; right++) {
+        let ch = s[right];
 
-        hash_arr[index] = i;
+        freq_map.set(ch, (freq_map.get(ch) || 0) + 1);
 
-        count += 1 + Math.min(
-            hash_arr[0],
-            hash_arr[1],
-            hash_arr[2]
-        );
+        maxFrq = Math.max(maxFrq, freq_map.get(ch));
+
+        if ((right - left + 1) - maxFrq > k) {
+            let leftChar = s[left];
+
+            freq_map.set(leftChar, freq_map.get(leftChar) - 1);
+
+            if (freq_map.get(leftChar) === 0) {
+                freq_map.delete(leftChar);
+            }
+
+            left++;
+        }
+
+        if ((right - left + 1) - maxFrq <= k) {
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
     }
 
-    return count;
+    return maxLen;
 };

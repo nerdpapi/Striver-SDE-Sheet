@@ -1,42 +1,36 @@
 /*
- * Problem: Longest Repeating Character Replacement
- * Approach: Optimized Sliding Window + Frequency Map (If)
+ * Problem: Binary Subarrays With Sum
+ * Approach: Sliding Window + At Most Technique
  *
  * Time Complexity: O(n)
- * Space Complexity: O(26) = O(1)
+ * Space Complexity: O(1)
  */
 
-var characterReplacement = function(s, k) {
-    let maxLen = 0;
-    let n = s.length;
+var numSubarraysWithSum = function(nums, goal) {
 
-    let left = 0;
-    let freq_map = new Map();
-    let maxFrq = 0;
+    function atMost(goal) {
+        if (goal < 0) {
+            return 0;
+        }
 
-    for (let right = 0; right < n; right++) {
-        let ch = s[right];
+        let n = nums.length;
+        let left = 0;
+        let count = 0;
+        let total = 0;
 
-        freq_map.set(ch, (freq_map.get(ch) || 0) + 1);
+        for (let right = 0; right < n; right++) {
+            total += nums[right];
 
-        maxFrq = Math.max(maxFrq, freq_map.get(ch));
-
-        if ((right - left + 1) - maxFrq > k) {
-            let leftChar = s[left];
-
-            freq_map.set(leftChar, freq_map.get(leftChar) - 1);
-
-            if (freq_map.get(leftChar) === 0) {
-                freq_map.delete(leftChar);
+            while (total > goal) {
+                total -= nums[left];
+                left++;
             }
 
-            left++;
+            count += right - left + 1;
         }
 
-        if ((right - left + 1) - maxFrq <= k) {
-            maxLen = Math.max(maxLen, right - left + 1);
-        }
+        return count;
     }
 
-    return maxLen;
+    return atMost(goal) - atMost(goal - 1);
 };

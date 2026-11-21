@@ -1,36 +1,34 @@
 """
 *
-* Problem: Longest Repeating Character Replacement
-* Approach: Optimized Sliding Window + Frequency Map (If)
+* Problem: Binary Subarrays With Sum
+* Approach: Sliding Window + At Most Technique
 *
 * Time Complexity: O(n)
-* Space Complexity: O(26) = O(1)
+* Space Complexity: O(1)
 *
 """
 
 class Solution:
-    def characterReplacement(self, s: str, k: int) -> int:
-        maxLen = 0
-        n = len(s)
+    def numSubarraysWithSum(self, nums: list[int], goal: int) -> int:
 
-        left = 0
-        freq_map = {}
-        maxFrq = 0
+        def atMost(goal):
+            if goal < 0:
+                return 0
 
-        for right in range(n):
-            freq_map[s[right]] = freq_map.get(s[right], 0) + 1
+            n = len(nums)
+            left = 0
+            count = 0
+            total = 0
 
-            maxFrq = max(maxFrq, freq_map[s[right]])
+            for right in range(n):
+                total += nums[right]
 
-            if (right - left + 1) - maxFrq > k:
-                freq_map[s[left]] -= 1
+                while total > goal:
+                    total -= nums[left]
+                    left += 1
 
-                if freq_map[s[left]] == 0:
-                    del freq_map[s[left]]
+                count += right - left + 1
 
-                left += 1
+            return count
 
-            if (right - left + 1) - maxFrq <= k:
-                maxLen = max(maxLen, right - left + 1)
-
-        return maxLen
+        return atMost(goal) - atMost(goal - 1)

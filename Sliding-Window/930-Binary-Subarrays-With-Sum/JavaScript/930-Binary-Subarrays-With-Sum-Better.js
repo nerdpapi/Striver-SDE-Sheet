@@ -1,34 +1,28 @@
 /*
- * Problem: Longest Repeating Character Replacement
- * Approach: Sliding Window + Frequency Array (While)
+ * Problem: Binary Subarrays With Sum
+ * Approach: Prefix Sum + Frequency HashMap
  *
  * Time Complexity: O(n)
- * Space Complexity: O(26) = O(1)
+ * Space Complexity: O(n)
  */
 
-var characterReplacement = function(s, k) {
-    let maxLen = 0;
-    let n = s.length;
+var numSubarraysWithSum = function(nums, goal) {
+    let prefix_sum = 0;
+    let count = 0;
 
-    let left = 0;
-    let hash_arr = new Array(26).fill(0);
-    let maxFrq = 0;
+    let freq = new Map();
+    freq.set(0, 1);
 
-    for (let right = 0; right < n; right++) {
-        let index = s.charCodeAt(right) - 65;
+    for (let num of nums) {
+        prefix_sum += num;
 
-        hash_arr[index]++;
-        maxFrq = Math.max(maxFrq, hash_arr[index]);
+        count += freq.get(prefix_sum - goal) || 0;
 
-        while ((right - left + 1) - maxFrq > k) {
-            let leftIndex = s.charCodeAt(left) - 65;
-
-            hash_arr[leftIndex]--;
-            left++;
-        }
-
-        maxLen = Math.max(maxLen, right - left + 1);
+        freq.set(
+            prefix_sum,
+            (freq.get(prefix_sum) || 0) + 1
+        );
     }
 
-    return maxLen;
+    return count;
 };

@@ -1,34 +1,28 @@
 """
 *
-* Problem: Longest Repeating Character Replacement
-* Approach: Sliding Window + Frequency Array (While)
+* Problem: Binary Subarrays With Sum
+* Approach: Prefix Sum + Frequency HashMap
 *
 * Time Complexity: O(n)
-* Space Complexity: O(26) = O(1)
+* Space Complexity: O(n)
 *
 """
 
+from collections import defaultdict
+
 class Solution:
-    def characterReplacement(self, s: str, k: int) -> int:
-        maxLen = 0
-        n = len(s)
+    def numSubarraysWithSum(self, nums: list[int], goal: int) -> int:
+        prefix_sum = 0
+        count = 0
 
-        left = 0
-        hash_arr = [0] * 26
-        maxFrq = 0
+        freq = defaultdict(int)
+        freq[0] = 1
 
-        for right in range(n):
-            index = ord(s[right]) - ord("A")
+        for num in nums:
+            prefix_sum += num
 
-            hash_arr[index] += 1
-            maxFrq = max(maxFrq, hash_arr[index])
+            count += freq[prefix_sum - goal]
 
-            while (right - left + 1) - maxFrq > k:
-                left_index = ord(s[left]) - ord("A")
+            freq[prefix_sum] += 1
 
-                hash_arr[left_index] -= 1
-                left += 1
-
-            maxLen = max(maxLen, right - left + 1)
-
-        return maxLen
+        return count

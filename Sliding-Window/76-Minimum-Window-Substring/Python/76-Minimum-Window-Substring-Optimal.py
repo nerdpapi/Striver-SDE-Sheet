@@ -1,17 +1,48 @@
+"""
+*
+* Problem: Minimum Window Substring
+* Approach: Sliding Window + Frequency Array
+*
+* Time Complexity: O(m + n)
+* Space Complexity: O(1)
+*
+"""
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+    def minWindow(self, s: str, t: str) -> str:
+        minLen = float('inf')
+        strIdx = -1
+
+        m = len(s)
+        n = len(t)
+
+        if n > m:
+            return ""
+
         left = 0
-        max_len = 0
-        hash_array = [-1] * 256
+        count = 0
 
-        for right in range(len(s)):
-            index = ord(s[right])
+        hash_arr = [0] * 256
 
-            if hash_array[index] >= left:
-                left = hash_array[index] + 1
+        for i in range(n):
+            hash_arr[ord(t[i])] += 1
 
-            hash_array[index] = right
+        for right in range(m):
+            if hash_arr[ord(s[right])] > 0:
+                count += 1
 
-            max_len = max(max_len, right - left + 1)
+            hash_arr[ord(s[right])] -= 1
 
-        return max_len
+            while count == n:
+                if minLen > right - left + 1:
+                    minLen = right - left + 1
+                    strIdx = left
+
+                hash_arr[ord(s[left])] += 1
+
+                if hash_arr[ord(s[left])] > 0:
+                    count -= 1
+
+                left += 1
+
+        return "" if strIdx == -1 else s[strIdx:strIdx + minLen]

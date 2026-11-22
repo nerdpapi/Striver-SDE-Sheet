@@ -1,25 +1,52 @@
-/**
- * @param {string} s
- * @return {number}
+/*
+ * Problem: Minimum Window Substring
+ * Approach: Brute Force + Frequency Array
+ *
+ * Time Complexity: O(m^2 + mn)
+ * Space Complexity: O(1)
  */
-var lengthOfLongestSubstring = function(s) {
-    let maxLen = 0;
-    const n = s.length;
 
-    for (let i = 0; i < n; i++) {
-        const hash = {};
+var minWindow = function(s, t) {
+    let minLen = Infinity;
+    let strIdx = -1;
 
-        for (let j = i; j < n; j++) {
-            const char = s[j];
+    let m = s.length;
+    let n = t.length;
 
-            if (hash[char] === 1) break;
+    if (n > m) {
+        return "";
+    }
 
-            hash[char] = 1;
+    for (let i = 0; i < m; i++) {
+        let hash_arr = new Array(256).fill(0);
 
-            const len = j - i + 1;
-            maxLen = Math.max(maxLen, len);
+        for (let j = 0; j < n; j++) {
+            hash_arr[t.charCodeAt(j)]++;
+        }
+
+        let count = 0;
+
+        for (let j = i; j < m; j++) {
+            let index = s.charCodeAt(j);
+
+            if (hash_arr[index] > 0) {
+                count++;
+            }
+
+            hash_arr[index]--;
+
+            if (count === n) {
+                if (minLen > j - i + 1) {
+                    minLen = j - i + 1;
+                    strIdx = i;
+                }
+
+                break;
+            }
         }
     }
 
-    return maxLen;
+    return strIdx === -1
+        ? ""
+        : s.substring(strIdx, strIdx + minLen);
 };

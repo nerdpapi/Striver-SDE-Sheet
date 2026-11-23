@@ -1,23 +1,31 @@
-/**
- * @param {string} s
- * @return {number}
+/*
+ * Problem: Maximum Sum Subarray of Size K
+ * Approach: Fixed-Size Sliding Window
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
  */
-var lengthOfLongestSubstring = function(s) {
-    let left = 0;
-    let maxLen = 0;
-    const hashArray = new Array(256).fill(-1);
 
-    for (let right = 0; right < s.length; right++) {
-        const index = s.charCodeAt(right);
+class Solution {
+    maxSubarraySum(arr, k) {
+        let n = arr.length;
+        let currSum = 0;
 
-        if (hashArray[index] >= left) {
-            left = hashArray[index] + 1;
+        // Calculate the first window
+        for (let i = 0; i < k; i++) {
+            currSum += arr[i];
         }
 
-        hashArray[index] = right;
+        let maxSum = currSum;
 
-        maxLen = Math.max(maxLen, right - left + 1);
+        // Slide the window
+        for (let right = k; right < n; right++) {
+            currSum += arr[right];
+            currSum -= arr[right - k];
+
+            maxSum = Math.max(maxSum, currSum);
+        }
+
+        return maxSum;
     }
-
-    return maxLen;
-};
+}

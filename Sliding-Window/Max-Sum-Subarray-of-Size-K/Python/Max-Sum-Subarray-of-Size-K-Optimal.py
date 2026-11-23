@@ -1,17 +1,30 @@
+"""
+*
+* Problem: Maximum Sum Subarray of Size K
+* Approach: Fixed-Size Sliding Window
+*
+* Time Complexity: O(n)
+* Space Complexity: O(1)
+*
+"""
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        left = 0
-        max_len = 0
-        hash_array = [-1] * 256
+    def maxSubarraySum(self, arr, k):
+        n = len(arr)
 
-        for right in range(len(s)):
-            index = ord(s[right])
+        currSum = 0
 
-            if hash_array[index] >= left:
-                left = hash_array[index] + 1
+        # Calculate the first window
+        for i in range(k):
+            currSum += arr[i]
 
-            hash_array[index] = right
+        maxSum = currSum
 
-            max_len = max(max_len, right - left + 1)
+        # Slide the window
+        for right in range(k, n):
+            currSum += arr[right]
+            currSum -= arr[right - k]
 
-        return max_len
+            maxSum = max(maxSum, currSum)
+
+        return maxSum

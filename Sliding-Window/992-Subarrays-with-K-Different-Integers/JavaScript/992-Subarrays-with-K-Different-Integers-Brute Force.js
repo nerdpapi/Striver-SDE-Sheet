@@ -1,26 +1,33 @@
 /*
- * Problem: Maximum Sum Subarray of Size K
- * Approach: Brute Force
+ * Problem: Subarrays with K Different Integers
+ * Approach: Brute Force + Frequency Map
  *
- * Time Complexity: O((n-k+1) * k)
- * Space Complexity: O(1)
+ * Time Complexity: O(n^2)
+ * Space Complexity: O(k)
  */
 
-class Solution {
-    maxSubarraySum(arr, k) {
-        let n = arr.length;
-        let maxSum = -Infinity;
+var subarraysWithKDistinct = function(nums, k) {
+    let count = 0;
+    let n = nums.length;
 
-        for (let i = 0; i <= n - k; i++) {
-            let total = 0;
+    for (let i = 0; i < n; i++) {
+        let freq_map = new Map();
 
-            for (let j = i; j < i + k; j++) {
-                total += arr[j];
+        for (let j = i; j < n; j++) {
+            freq_map.set(
+                nums[j],
+                (freq_map.get(nums[j]) || 0) + 1
+            );
+
+            if (freq_map.size === k) {
+                count++;
             }
 
-            maxSum = Math.max(maxSum, total);
+            if (freq_map.size > k) {
+                break;
+            }
         }
-
-        return maxSum;
     }
-}
+
+    return count;
+};

@@ -1,25 +1,26 @@
-/**
- * @param {string} s
- * @return {number}
+/*
+ * Problem: Maximum Sum Subarray of Size K
+ * Approach: Brute Force
+ *
+ * Time Complexity: O((n-k+1) * k)
+ * Space Complexity: O(1)
  */
-var lengthOfLongestSubstring = function(s) {
-    let maxLen = 0;
-    const n = s.length;
 
-    for (let i = 0; i < n; i++) {
-        const hash = {};
+class Solution {
+    maxSubarraySum(arr, k) {
+        let n = arr.length;
+        let maxSum = -Infinity;
 
-        for (let j = i; j < n; j++) {
-            const char = s[j];
+        for (let i = 0; i <= n - k; i++) {
+            let total = 0;
 
-            if (hash[char] === 1) break;
+            for (let j = i; j < i + k; j++) {
+                total += arr[j];
+            }
 
-            hash[char] = 1;
-
-            const len = j - i + 1;
-            maxLen = Math.max(maxLen, len);
+            maxSum = Math.max(maxSum, total);
         }
-    }
 
-    return maxLen;
-};
+        return maxSum;
+    }
+}

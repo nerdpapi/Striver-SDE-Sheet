@@ -1,31 +1,49 @@
 /*
- * Problem: Maximum Sum Subarray of Size K
- * Approach: Fixed-Size Sliding Window
+ * Problem: Subarrays with K Different Integers
+ * Approach: Sliding Window + At Most Technique
  *
  * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Space Complexity: O(k)
  */
 
-class Solution {
-    maxSubarraySum(arr, k) {
-        let n = arr.length;
-        let currSum = 0;
+var subarraysWithKDistinct = function(nums, k) {
 
-        // Calculate the first window
-        for (let i = 0; i < k; i++) {
-            currSum += arr[i];
+    function atMost(k) {
+        if (k < 0) {
+            return 0;
         }
 
-        let maxSum = currSum;
+        let n = nums.length;
+        let left = 0;
+        let count = 0;
+        let freq_map = new Map();
 
-        // Slide the window
-        for (let right = k; right < n; right++) {
-            currSum += arr[right];
-            currSum -= arr[right - k];
+        for (let right = 0; right < n; right++) {
+            freq_map.set(
+                nums[right],
+                (freq_map.get(nums[right]) || 0) + 1
+            );
 
-            maxSum = Math.max(maxSum, currSum);
+            while (freq_map.size > k) {
+                let value = nums[left];
+
+                freq_map.set(
+                    value,
+                    freq_map.get(value) - 1
+                );
+
+                if (freq_map.get(value) === 0) {
+                    freq_map.delete(value);
+                }
+
+                left++;
+            }
+
+            count += right - left + 1;
         }
 
-        return maxSum;
+        return count;
     }
-}
+
+    return atMost(k) - atMost(k - 1);
+};

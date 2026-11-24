@@ -1,17 +1,40 @@
+
+"""
+*
+* Problem: 2461. Maximum Sum of Distinct Subarrays With Length K
+* Approach: Optimal - Fixed-Size Sliding Window + Hash Map
+*
+* Time Complexity: O(n)
+* Space Complexity: O(k)
+*
+"""
+
+from collections import defaultdict
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+    def maximumSubarraySum(self, nums: list[int], k: int) -> int:
+        n = len(nums)
+        freq_map = defaultdict(int)
+
+        maxSum = 0
+        total = 0
         left = 0
-        max_len = 0
-        hash_array = [-1] * 256
 
-        for right in range(len(s)):
-            index = ord(s[right])
+        for right in range(n):
+            total += nums[right]
+            freq_map[nums[right]] += 1
 
-            if hash_array[index] >= left:
-                left = hash_array[index] + 1
+            if right - left + 1 == k:
 
-            hash_array[index] = right
+                if len(freq_map) == k:
+                    maxSum = max(maxSum, total)
 
-            max_len = max(max_len, right - left + 1)
+                freq_map[nums[left]] -= 1
 
-        return max_len
+                if freq_map[nums[left]] == 0:
+                    del freq_map[nums[left]]
+
+                total -= nums[left]
+                left += 1
+
+        return maxSum

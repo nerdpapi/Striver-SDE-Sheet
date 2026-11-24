@@ -1,48 +1,39 @@
+
 """
 *
-* Problem: Minimum Window Substring
-* Approach: Sliding Window + Frequency Array
+* Problem: First Negative Integer in Every Window of Size K
+* Approach: Optimal - Sliding Window + Deque
 *
-* Time Complexity: O(m + n)
-* Space Complexity: O(1)
+* Time Complexity: O(n)
+* Space Complexity: O(k)
 *
 """
+
+from collections import deque
 
 class Solution:
-    def minWindow(self, s: str, t: str) -> str:
-        minLen = float('inf')
-        strIdx = -1
-
-        m = len(s)
-        n = len(t)
-
-        if n > m:
-            return ""
+    def firstNegInt(self, arr, k):
+        n = len(arr)
+        negatives = deque()
+        result = []
 
         left = 0
-        count = 0
 
-        hash_arr = [0] * 256
+        for right in range(n):
 
-        for i in range(n):
-            hash_arr[ord(t[i])] += 1
+            if arr[right] < 0:
+                negatives.append(arr[right])
 
-        for right in range(m):
-            if hash_arr[ord(s[right])] > 0:
-                count += 1
+            if right - left + 1 == k:
 
-            hash_arr[ord(s[right])] -= 1
+                if len(negatives) > 0:
+                    result.append(negatives[0])
+                else:
+                    result.append(0)
 
-            while count == n:
-                if minLen > right - left + 1:
-                    minLen = right - left + 1
-                    strIdx = left
-
-                hash_arr[ord(s[left])] += 1
-
-                if hash_arr[ord(s[left])] > 0:
-                    count -= 1
+                if negatives and negatives[0] == arr[left]:
+                    negatives.popleft()
 
                 left += 1
 
-        return "" if strIdx == -1 else s[strIdx:strIdx + minLen]
+        return result

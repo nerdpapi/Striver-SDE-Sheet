@@ -1,52 +1,37 @@
+
 /*
- * Problem: Minimum Window Substring
- * Approach: Brute Force + Frequency Array
+ * Problem: First Negative Integer in Every Window of Size K
+ * Approach: Brute Force - Generate Each Window and Search
  *
- * Time Complexity: O(m^2 + mn)
- * Space Complexity: O(1)
+ * Time Complexity: O(n * k)
+ * Space Complexity: O(k) auxiliary space
  */
 
-var minWindow = function(s, t) {
-    let minLen = Infinity;
-    let strIdx = -1;
+var firstNegInt = function(arr, k) {
+    let n = arr.length;
+    let result = [];
 
-    let m = s.length;
-    let n = t.length;
+    for (let i = 0; i <= n - k; i++) {
+        let window = [];
 
-    if (n > m) {
-        return "";
-    }
-
-    for (let i = 0; i < m; i++) {
-        let hash_arr = new Array(256).fill(0);
-
-        for (let j = 0; j < n; j++) {
-            hash_arr[t.charCodeAt(j)]++;
+        for (let j = i; j < i + k; j++) {
+            window.push(arr[j]);
         }
 
-        let count = 0;
+        let found = false;
 
-        for (let j = i; j < m; j++) {
-            let index = s.charCodeAt(j);
-
-            if (hash_arr[index] > 0) {
-                count++;
-            }
-
-            hash_arr[index]--;
-
-            if (count === n) {
-                if (minLen > j - i + 1) {
-                    minLen = j - i + 1;
-                    strIdx = i;
-                }
-
+        for (let negative of window) {
+            if (negative < 0) {
+                result.push(negative);
+                found = true;
                 break;
             }
         }
+
+        if (!found) {
+            result.push(0);
+        }
     }
 
-    return strIdx === -1
-        ? ""
-        : s.substring(strIdx, strIdx + minLen);
+    return result;
 };

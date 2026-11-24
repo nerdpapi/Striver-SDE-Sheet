@@ -9,23 +9,17 @@
 class Solution {
     maxSubarraySum(arr, k) {
         let n = arr.length;
+        let maxSum = 0;
         let currSum = 0;
-
-        // Calculate the first window
-        for (let i = 0; i < k; i++) {
-            currSum += arr[i];
-        }
-
-        let maxSum = currSum;
-
-        // Slide the window
-        for (let right = k; right < n; right++) {
+        let left = 0;
+        for (let right = 0; right < n; right++) {
             currSum += arr[right];
-            currSum -= arr[right - k];
-
-            maxSum = Math.max(maxSum, currSum);
+            if (right - left + 1 === k) {
+                maxSum = Math.max(maxSum, currSum);
+                currSum -= arr[left];
+                left++;
+            }
         }
-
         return maxSum;
     }
 }

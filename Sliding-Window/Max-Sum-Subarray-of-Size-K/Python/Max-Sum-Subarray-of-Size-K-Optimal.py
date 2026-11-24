@@ -11,20 +11,14 @@
 class Solution:
     def maxSubarraySum(self, arr, k):
         n = len(arr)
-
-        currSum = 0
-
-        # Calculate the first window
-        for i in range(k):
-            currSum += arr[i]
-
-        maxSum = currSum
-
-        # Slide the window
-        for right in range(k, n):
-            currSum += arr[right]
-            currSum -= arr[right - k]
-
-            maxSum = max(maxSum, currSum)
+        maxSum = float('-inf')
+        total = 0
+        left = 0
+        for right in range(n):
+            total += arr[right]
+            if right - left + 1 == k:
+                maxSum = max(maxSum, total)
+                total -= arr[left]
+                left += 1
 
         return maxSum

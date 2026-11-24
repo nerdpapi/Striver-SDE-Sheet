@@ -1,59 +1,47 @@
+
 /*
- * Problem: Minimum Window Substring
- * Approach: Sliding Window + Frequency Array
+ * Problem: First Negative Integer in Every Window of Size K
+ * Approach: Optimal - Sliding Window + Queue of Negative Indices
  *
- * Time Complexity: O(m + n)
- * Space Complexity: O(1)
+ * Time Complexity: O(n) amortized
+ * Space Complexity: O(k)
  */
 
-var minWindow = function(s, t) {
-    let minLen = Infinity;
-    let strIdx = -1;
+var firstNegInt = function(arr, k) {
+    let n = arr.length;
+    let negatives = [];
+    let head = 0;
 
-    let m = s.length;
-    let n = t.length;
-
-    if (n > m) {
-        return "";
-    }
-
+    let result = [];
     let left = 0;
-    let count = 0;
 
-    let hash_arr = new Array(256).fill(0);
+    for (let right = 0; right < n; right++) {
 
-    for (let i = 0; i < n; i++) {
-        hash_arr[t.charCodeAt(i)]++;
-    }
-
-    for (let right = 0; right < m; right++) {
-        let rightIndex = s.charCodeAt(right);
-
-        if (hash_arr[rightIndex] > 0) {
-            count++;
+        if (arr[right] < 0) {
+            negatives.push(right);
         }
 
-        hash_arr[rightIndex]--;
+        if (right - left + 1 === k) {
 
-        while (count === n) {
-            if (minLen > right - left + 1) {
-                minLen = right - left + 1;
-                strIdx = left;
+            if (head < negatives.length) {
+                result.push(arr[negatives[head]]);
+            } else {
+                result.push(0);
             }
 
-            let leftIndex = s.charCodeAt(left);
-
-            hash_arr[leftIndex]++;
-
-            if (hash_arr[leftIndex] > 0) {
-                count--;
+            if (head < negatives.length && negatives[head] === left) {
+                head++;
             }
 
             left++;
+
+            // Periodically remove expired queue entries.
+            if (head > k) {
+                negatives = negatives.slice(head);
+                head = 0;
+            }
         }
     }
 
-    return strIdx === -1
-        ? ""
-        : s.substring(strIdx, strIdx + minLen);
+    return result;
 };

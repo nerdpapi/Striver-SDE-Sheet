@@ -1,23 +1,47 @@
-/**
- * @param {string} s
- * @return {number}
+
+/*
+ * Problem: 2461. Maximum Sum of Distinct Subarrays With Length K
+ * Approach: Optimal - Fixed-Size Sliding Window + Hash Map
+ *
+ * Time Complexity: O(n)
+ * Space Complexity: O(k)
  */
-var lengthOfLongestSubstring = function(s) {
+
+var maximumSubarraySum = function(nums, k) {
+    let n = nums.length;
+    let freqMap = new Map();
+
+    let maxSum = 0;
+    let total = 0;
     let left = 0;
-    let maxLen = 0;
-    const hashArray = new Array(256).fill(-1);
 
-    for (let right = 0; right < s.length; right++) {
-        const index = s.charCodeAt(right);
+    for (let right = 0; right < n; right++) {
+        total += nums[right];
 
-        if (hashArray[index] >= left) {
-            left = hashArray[index] + 1;
+        freqMap.set(
+            nums[right],
+            (freqMap.get(nums[right]) || 0) + 1
+        );
+
+        if (right - left + 1 === k) {
+
+            if (freqMap.size === k) {
+                maxSum = Math.max(maxSum, total);
+            }
+
+            freqMap.set(
+                nums[left],
+                freqMap.get(nums[left]) - 1
+            );
+
+            if (freqMap.get(nums[left]) === 0) {
+                freqMap.delete(nums[left]);
+            }
+
+            total -= nums[left];
+            left++;
         }
-
-        hashArray[index] = right;
-
-        maxLen = Math.max(maxLen, right - left + 1);
     }
 
-    return maxLen;
+    return maxSum;
 };

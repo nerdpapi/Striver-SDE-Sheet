@@ -1,48 +1,26 @@
-/**
- * Problem: 5. Longest Palindromic Substring
- * Approach: Expand Around Center
+
+/*
+ * Problem: 455. Assign Cookies
+ * Approach: Optimal - Sorting + Greedy + Two Pointers
  *
- * Time Complexity: O(n^2)
- * Space Complexity: O(1)
+ * Time Complexity: O(n log n + m log m)
+ * Space Complexity: O(1) auxiliary space, excluding sorting
  */
 
-/**
- * @param {string} s
- * @return {string}
- */
-var longestPalindrome = function(s) {
-    let start = 0;
-    let maxLen = 0;
+var findContentChildren = function(g, s) {
+    g.sort((a, b) => a - b);
+    s.sort((a, b) => a - b);
 
-    for (let i = 0; i < s.length; i++) {
-        // Odd-length palindrome
-        let l = i;
-        let r = i;
+    let left = 0;
+    let right = 0;
 
-        while (l >= 0 && r < s.length && s[l] === s[r]) {
-            if (r - l + 1 > maxLen) {
-                start = l;
-                maxLen = r - l + 1;
-            }
-
-            l--;
-            r++;
+    while (left < s.length && right < g.length) {
+        if (s[left] >= g[right]) {
+            right++;
         }
 
-        // Even-length palindrome
-        l = i;
-        r = i + 1;
-
-        while (l >= 0 && r < s.length && s[l] === s[r]) {
-            if (r - l + 1 > maxLen) {
-                start = l;
-                maxLen = r - l + 1;
-            }
-
-            l--;
-            r++;
-        }
+        left++;
     }
 
-    return s.slice(start, start + maxLen);
+    return right;
 };

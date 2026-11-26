@@ -1,26 +1,46 @@
 
 /*
- * Problem: 455. Assign Cookies
- * Approach: Optimal - Sorting + Greedy + Two Pointers
+ * Problem: 860. Lemonade Change
+ * Approach: Optimal - Greedy + Frequency Counters
  *
- * Time Complexity: O(n log n + m log m)
- * Space Complexity: O(1) auxiliary space, excluding sorting
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
  */
 
-var findContentChildren = function(g, s) {
-    g.sort((a, b) => a - b);
-    s.sort((a, b) => a - b);
+var lemonadeChange = function(bills) {
+    let five = 0;
+    let ten = 0;
 
-    let left = 0;
-    let right = 0;
+    for (let bill of bills) {
 
-    while (left < s.length && right < g.length) {
-        if (s[left] >= g[right]) {
-            right++;
+        if (bill === 5) {
+            five++;
         }
 
-        left++;
+        else if (bill === 10) {
+            if (five === 0) {
+                return false;
+            }
+
+            five--;
+            ten++;
+        }
+
+        else {
+            if (five > 0 && ten > 0) {
+                five--;
+                ten--;
+            }
+
+            else if (five >= 3) {
+                five -= 3;
+            }
+
+            else {
+                return false;
+            }
+        }
     }
 
-    return right;
+    return true;
 };

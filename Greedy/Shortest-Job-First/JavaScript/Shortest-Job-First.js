@@ -1,46 +1,25 @@
 
 /*
- * Problem: 860. Lemonade Change
- * Approach: Optimal - Greedy + Frequency Counters
+ * Problem: Shortest Job First (SJF)
+ * Approach: Optimal - Greedy + Sorting
  *
- * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Time Complexity: O(n log n)
+ * Space Complexity: O(1) auxiliary space, excluding sorting
  */
 
-var lemonadeChange = function(bills) {
-    let five = 0;
-    let ten = 0;
+class Solution {
+    solve(bt) {
+        bt.sort((a, b) => a - b);
 
-    for (let bill of bills) {
+        let n = bt.length;
+        let wtTime = 0;
+        let time = 0;
 
-        if (bill === 5) {
-            five++;
+        for (let b of bt) {
+            wtTime += time;
+            time += b;
         }
 
-        else if (bill === 10) {
-            if (five === 0) {
-                return false;
-            }
-
-            five--;
-            ten++;
-        }
-
-        else {
-            if (five > 0 && ten > 0) {
-                five--;
-                ten--;
-            }
-
-            else if (five >= 3) {
-                five -= 3;
-            }
-
-            else {
-                return false;
-            }
-        }
+        return Math.floor(wtTime / n);
     }
-
-    return true;
-};
+}

@@ -1,26 +1,24 @@
 
 /*
- * Problem: 455. Assign Cookies
- * Approach: Optimal - Sorting + Greedy + Two Pointers
+ * Problem: 55. Jump Game
+ * Approach: Optimal - Greedy + Maximum Reachability
  *
- * Time Complexity: O(n log n + m log m)
- * Space Complexity: O(1) auxiliary space, excluding sorting
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
  */
 
-var findContentChildren = function(g, s) {
-    g.sort((a, b) => a - b);
-    s.sort((a, b) => a - b);
+var canJump = function(nums) {
+    let n = nums.length;
+    let maxIdx = 0;
 
-    let left = 0;
-    let right = 0;
+    for (let i = 0; i < n; i++) {
 
-    while (left < s.length && right < g.length) {
-        if (s[left] >= g[right]) {
-            right++;
+        if (maxIdx < i) {
+            return false;
         }
 
-        left++;
+        maxIdx = Math.max(maxIdx, nums[i] + i);
     }
 
-    return right;
+    return true;
 };

@@ -1,24 +1,31 @@
 
 /*
- * Problem: 55. Jump Game
- * Approach: Optimal - Greedy + Maximum Reachability
+ * Problem: 45. Jump Game II
+ * Approach: Brute Force - Recursion
  *
- * Time Complexity: O(n)
- * Space Complexity: O(1)
+ * Time Complexity: O(2^n)
+ * Space Complexity: O(n)
  */
 
-var canJump = function(nums) {
+var jump = function(nums) {
     let n = nums.length;
-    let maxIdx = 0;
 
-    for (let i = 0; i < n; i++) {
-
-        if (maxIdx < i) {
-            return false;
+    function jumps(index, jump) {
+        if (index >= n - 1) {
+            return jump;
         }
 
-        maxIdx = Math.max(maxIdx, nums[i] + i);
+        let minJump = Infinity;
+
+        for (let i = 1; i <= nums[index]; i++) {
+            minJump = Math.min(
+                minJump,
+                jumps(index + i, jump + 1)
+            );
+        }
+
+        return minJump;
     }
 
-    return true;
+    return jumps(0, 0);
 };

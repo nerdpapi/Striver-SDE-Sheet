@@ -1,8 +1,8 @@
 
 """
 *
-* Problem: 55. Jump Game
-* Approach: Optimal - Greedy + Maximum Reachability
+* Problem: 45. Jump Game II
+* Approach: Optimal - Greedy + Range Expansion
 *
 * Time Complexity: O(n)
 * Space Complexity: O(1)
@@ -10,18 +10,21 @@
 """
 
 class Solution:
-    def canJump(self, nums: list[int]) -> bool:
+    def jump(self, nums: list[int]) -> int:
         n = len(nums)
-        maxIdx = 0
 
-        for i in range(n):
+        jump = 0
+        l = 0
+        r = 0
 
-            if maxIdx < i:
-                return False
+        while r < n - 1:
+            farthest = 0
 
-            maxIdx = max(maxIdx, nums[i] + i)
+            for i in range(l, r + 1):
+                farthest = max(farthest, i + nums[i])
 
-            if maxIdx >= n - 1:
-                return True
+            jump += 1
+            l = r + 1
+            r = farthest
 
-        return True
+        return jump
